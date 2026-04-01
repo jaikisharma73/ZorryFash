@@ -42,6 +42,15 @@ const Cart = () => {
 
             const productData = products.find((product) => product._id === item._id);
 
+            // Get size-specific price
+            let itemPrice = productData.price;
+            if (productData.sizes && productData.sizes.length > 0 && typeof productData.sizes[0] === 'object' && productData.sizes[0].size) {
+              const sizeData = productData.sizes.find(s => s.size === item.size);
+              if (sizeData) {
+                itemPrice = sizeData.price;
+              }
+            }
+
             return (
               <div key={index} className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'>
                 <div className=' flex items-start gap-6'>
@@ -49,7 +58,7 @@ const Cart = () => {
                   <div>
                     <p className='text-xs sm:text-lg font-medium'>{productData.name}</p>
                     <div className='flex items-center gap-5 mt-2'>
-                      <p>{currency}{productData.price}</p>
+                      <p>{currency}{itemPrice}</p>
                       <p className='px-2 sm:px-3 sm:py-1 border bg-slate-50'>{item.size}</p>
                     </div>
                   </div>

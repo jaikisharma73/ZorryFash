@@ -86,4 +86,53 @@ const singleProduct = async (req, res) => {
     }
 }
 
-export { listProducts, addProduct, removeProduct, singleProduct }
+// function for editing product
+const editProduct = async (req, res) => {
+    try {
+        const { id, name, description, price, category, subCategory, sizes, bestseller } = req.body
+
+        const product = await productModel.findById(id)
+        if (!product) {
+            return res.json({ success: false, message: "Product not found" })
+        }
+
+        // Handle new images if uploaded
+        const image1 = req.files?.image1 && req.files.image1[0]
+        const image2 = req.files?.image2 && req.files.image2[0]
+        const image3 = req.files?.image3 && req.files.image3[0]
+        const image4 = req.files?.image4 && req.files.image4[0]
+
+        const newImages = [image1, image2, image3, image4].filter((item) => item !== undefined)
+
+        let imagesUrl = product.image // keep existing images by default
+
+        if (newImages.length > 0) {
+            imagesUrl = await Promise.all(
+                newImages.map(async (item) => {
+                    let result = await cloudinary.uploader.upload(item.path, { resource_type: 'image' });
+                    return result.secure_url
+                })
+            )
+        }
+
+        const updateData = {
+            name,
+            description,
+            category,
+            price: Number(price),
+            subCategory,
+            bestseller: bestseller === "true" ? true : false,
+            sizes: JSON.parse(sizes),
+            image: imagesUrl,
+        }
+
+        await productModel.findByIdAndUpdate(id, updateData)
+        res.json({ success: true, message: "Product Updated" })
+
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { listProducts, addProduct, removeProduct, singleProduct, editProduct }

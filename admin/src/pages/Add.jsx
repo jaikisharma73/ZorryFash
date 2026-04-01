@@ -13,26 +13,67 @@ const Add = ({token}) => {
 
    const [name, setName] = useState("");
    const [description, setDescription] = useState("");
-   const [price, setPrice] = useState("");
    const [category, setCategory] = useState("Men");
    const [subCategory, setSubCategory] = useState("Topwear");
    const [bestseller, setBestseller] = useState(false);
    const [sizes, setSizes] = useState([]);
+   const [sizePrices, setSizePrices] = useState({});
+
+   const allSizes = ["S", "M", "L", "XL", "XXL"];
+
+   const toggleSize = (size) => {
+     if (sizes.includes(size)) {
+       setSizes(prev => prev.filter(item => item !== size));
+       setSizePrices(prev => {
+         const updated = {...prev};
+         delete updated[size];
+         return updated;
+       });
+     } else {
+       setSizes(prev => [...prev, size]);
+     }
+   }
+
+   const updateSizePrice = (size, price) => {
+     setSizePrices(prev => ({...prev, [size]: price}));
+   }
 
    const onSubmitHandler = async (e) => {
     e.preventDefault();
+
+    // Validate that all selected sizes have prices
+    for (const size of sizes) {
+      if (!sizePrices[size] || sizePrices[size] <= 0) {
+        toast.error(`Please enter a price for size ${size}`);
+        return;
+      }
+    }
+
+    if (sizes.length === 0) {
+      toast.error('Please select at least one size');
+      return;
+    }
 
     try {
       
       const formData = new FormData()
 
+      // Build sizes array with prices: [{size: "S", price: 500}, ...]
+      const sizesWithPrices = sizes.map(size => ({
+        size: size,
+        price: Number(sizePrices[size])
+      }));
+
+      // Use the lowest size price as the default product price
+      const defaultPrice = Math.min(...sizesWithPrices.map(s => s.price));
+
       formData.append("name",name)
       formData.append("description",description)
-      formData.append("price",price)
+      formData.append("price", defaultPrice)
       formData.append("category",category)
       formData.append("subCategory",subCategory)
       formData.append("bestseller",bestseller)
-      formData.append("sizes",JSON.stringify(sizes))
+      formData.append("sizes",JSON.stringify(sizesWithPrices))
 
       image1 && formData.append("image1",image1)
       image2 && formData.append("image2",image2)
@@ -49,7 +90,8 @@ const Add = ({token}) => {
         setImage2(false)
         setImage3(false)
         setImage4(false)
-        setPrice('')
+        setSizes([])
+        setSizePrices({})
       } else {
         toast.error(response.data.message)
       }
@@ -115,36 +157,42 @@ const Add = ({token}) => {
               </select>
             </div>
 
-            <div>
-              <p className='mb-2'>Product Price</p>
-              <input onChange={(e) => setPrice(e.target.value)} value={price} className='w-full px-3 py-2 sm:w-[120px]' type="Number" placeholder='25' />
-            </div>
-
         </div>
 
         <div>
-          <p className='mb-2'>Product Sizes</p>
+          <p className='mb-2'>Product Sizes & Prices</p>
+          <p className='text-sm text-gray-400 mb-2'>Click a size to select it, then enter the price for that size</p>
           <div className='flex gap-3'>
-            <div onClick={()=>setSizes(prev => prev.includes("S") ? prev.filter( item => item !== "S") : [...prev,"S"])}>
-              <p className={`${sizes.includes("S") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>S</p>
-            </div>
-            
-            <div onClick={()=>setSizes(prev => prev.includes("M") ? prev.filter( item => item !== "M") : [...prev,"M"])}>
-              <p className={`${sizes.includes("M") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>M</p>
-            </div>
-
-            <div onClick={()=>setSizes(prev => prev.includes("L") ? prev.filter( item => item !== "L") : [...prev,"L"])}>
-              <p className={`${sizes.includes("L") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>L</p>
-            </div>
-
-            <div onClick={()=>setSizes(prev => prev.includes("XL") ? prev.filter( item => item !== "XL") : [...prev,"XL"])}>
-              <p className={`${sizes.includes("XL") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>XL</p>
-            </div>
-
-            <div onClick={()=>setSizes(prev => prev.includes("XXL") ? prev.filter( item => item !== "XXL") : [...prev,"XXL"])}>
-              <p className={`${sizes.includes("XXL") ? "bg-pink-100" : "bg-slate-200" } px-3 py-1 cursor-pointer`}>XXL</p>
-            </div>
+            {allSizes.map((size) => (
+              <div key={size} onClick={() => toggleSize(size)}>
+                <p className={`${sizes.includes(size) ? "bg-pink-100" : "bg-slate-200"} px-3 py-1 cursor-pointer`}>{size}</p>
+              </div>
+            ))}
           </div>
+
+          {/* Price inputs for selected sizes */}
+          {sizes.length > 0 && (
+            <div className='mt-4 flex flex-col gap-2'>
+              <p className='text-sm font-medium text-gray-600'>Set price for each size:</p>
+              <div className='flex flex-wrap gap-4'>
+                {sizes.map((size) => (
+                  <div key={size} className='flex items-center gap-2 bg-gray-50 border rounded px-3 py-2'>
+                    <span className='font-medium text-sm min-w-[30px]'>{size}:</span>
+                    <span className='text-gray-500'>₹</span>
+                    <input
+                      type="number"
+                      min="1"
+                      placeholder="Price"
+                      value={sizePrices[size] || ''}
+                      onChange={(e) => updateSizePrice(size, e.target.value)}
+                      className='w-[80px] px-2 py-1 border rounded text-sm'
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className='flex gap-2 mt-2'>

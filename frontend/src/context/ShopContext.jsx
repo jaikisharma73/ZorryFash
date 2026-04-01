@@ -7,7 +7,7 @@ export const ShopContext = createContext();
 
 const ShopContextProvider = (props) => {
 
-    const currency = '$';
+    const currency = '₹ ';
     const delivery_fee = 10;
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [search, setSearch] = useState('');
@@ -98,7 +98,15 @@ const ShopContextProvider = (props) => {
             for (const item in cartItems[items]) {
                 try {
                     if (cartItems[items][item] > 0) {
-                        totalAmount += itemInfo.price * cartItems[items][item];
+                        // Check if product has size-wise pricing (new format)
+                        let itemPrice = itemInfo.price;
+                        if (itemInfo.sizes && itemInfo.sizes.length > 0 && typeof itemInfo.sizes[0] === 'object' && itemInfo.sizes[0].size) {
+                            const sizeData = itemInfo.sizes.find(s => s.size === item);
+                            if (sizeData) {
+                                itemPrice = sizeData.price;
+                            }
+                        }
+                        totalAmount += itemPrice * cartItems[items][item];
                     }
                 } catch (error) {
 
@@ -124,10 +132,10 @@ const ShopContextProvider = (props) => {
         }
     }
 
-    const getUserCart = async ( token ) => {
+    const getUserCart = async (token) => {
         try {
-            
-            const response = await axios.post(backendUrl + '/api/cart/get',{},{headers:{token}})
+
+            const response = await axios.post(backendUrl + '/api/cart/get', {}, { headers: { token } })
             if (response.data.success) {
                 setCartItems(response.data.cartData)
             }
@@ -154,7 +162,7 @@ const ShopContextProvider = (props) => {
     const value = {
         products, currency, delivery_fee,
         search, setSearch, showSearch, setShowSearch,
-        cartItems, addToCart,setCartItems,
+        cartItems, addToCart, setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
         setToken, token

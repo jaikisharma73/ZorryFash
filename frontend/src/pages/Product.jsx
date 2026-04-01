@@ -11,6 +11,35 @@ const Product = () => {
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('')
   const [size,setSize] = useState('')
+  const [displayPrice, setDisplayPrice] = useState(0)
+
+  // Helper: get price for a specific size from the product's sizes array
+  const getSizePrice = (product, selectedSize) => {
+    if (product.sizes && product.sizes.length > 0 && typeof product.sizes[0] === 'object' && product.sizes[0].size) {
+      // New format: [{size: "S", price: 500}, ...]
+      const found = product.sizes.find(s => s.size === selectedSize);
+      return found ? found.price : product.price;
+    }
+    // Old format: ["S", "M", "L"] — use product.price
+    return product.price;
+  }
+
+  // Helper: get the list of size names from the product
+  const getSizeNames = (product) => {
+    if (product.sizes && product.sizes.length > 0 && typeof product.sizes[0] === 'object' && product.sizes[0].size) {
+      return product.sizes.map(s => s.size);
+    }
+    return product.sizes || [];
+  }
+
+  // Helper: get default/minimum price to display before size selection
+  const getDefaultPrice = (product) => {
+    if (product.sizes && product.sizes.length > 0 && typeof product.sizes[0] === 'object' && product.sizes[0].size) {
+      const prices = product.sizes.map(s => s.price);
+      return Math.min(...prices);
+    }
+    return product.price;
+  }
 
   const fetchProductData = async () => {
 
@@ -18,6 +47,7 @@ const Product = () => {
       if (item._id === productId) {
         setProductData(item)
         setImage(item.image[0])
+        setDisplayPrice(getDefaultPrice(item))
         return null;
       }
     })
@@ -27,6 +57,14 @@ const Product = () => {
   useEffect(() => {
     fetchProductData();
   }, [productId,products])
+
+  // Update price when size is selected
+  const handleSizeSelect = (selectedSize) => {
+    setSize(selectedSize);
+    if (productData) {
+      setDisplayPrice(getSizePrice(productData, selectedSize));
+    }
+  }
 
   return productData ? (
     <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
@@ -58,13 +96,18 @@ const Product = () => {
               <img src={assets.star_dull_icon} alt="" className="w-3 5" />
               <p className='pl-2'>(122)</p>
           </div>
-          <p className='mt-5 text-3xl font-medium'>{currency}{productData.price}</p>
+          <p className='mt-5 text-3xl font-medium'>
+            {currency}{displayPrice}
+            {!size && productData.sizes && productData.sizes.length > 0 && typeof productData.sizes[0] === 'object' && (
+              <span className='text-sm text-gray-400 ml-2'>onwards</span>
+            )}
+          </p>
           <p className='mt-5 text-gray-500 md:w-4/5'>{productData.description}</p>
           <div className='flex flex-col gap-4 my-8'>
               <p>Select Size</p>
               <div className='flex gap-2'>
-                {productData.sizes.map((item,index)=>(
-                  <button onClick={()=>setSize(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`} key={index}>{item}</button>
+                {getSizeNames(productData).map((item,index)=>(
+                  <button onClick={()=>handleSizeSelect(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`} key={index}>{item}</button>
                 ))}
               </div>
           </div>
