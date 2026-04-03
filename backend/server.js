@@ -11,8 +11,6 @@ import orderRouter from './routes/orderRoute.js'
 // App Config
 const app = express()
 const port = process.env.PORT || 4000
-connectDB()
-connectCloudinary()
 
 // middlewares
 app.use(express.json())
@@ -28,4 +26,19 @@ app.get('/',(req,res)=>{
     res.send("API Working")
 })
 
-app.listen(port, ()=> console.log('Server started on PORT : '+ port))
+// ✅ START SERVER ONLY AFTER DB CONNECTS
+const startServer = async () => {
+    try {
+        await connectDB()          // 🔥 WAIT here
+        await connectCloudinary()  // (optional but better)
+
+        app.listen(port, () => {
+            console.log('Server started on PORT : ' + port)
+        })
+
+    } catch (error) {
+        console.error("Startup error:", error)
+    }
+}
+
+startServer()
