@@ -55,11 +55,11 @@ const Footer = () => {
                 {/* Customer Service */}
                 <div>
                     <p className='footer-heading'>Help</p>
-                    <ul className='footer-links'>
+                    <ul className='footer-links flex flex-col gap-1'>
                         <li><Link to="/orders" onClick={() => window.scrollTo(0,0)}>Track Order</Link></li>
-                        <li>Shipping Info</li>
-                        <li>Returns & Exchanges</li>
-                        <li>Size Guide</li>
+                        <li><Link to="/shipping" onClick={() => window.scrollTo(0,0)}>Shipping Info</Link></li>
+                        <li><Link to="/returns" onClick={() => window.scrollTo(0,0)}>Returns & Exchanges</Link></li>
+                        <li><Link to="/size-guide" onClick={() => window.scrollTo(0,0)}>Size Guide</Link></li>
                     </ul>
                 </div>
 
@@ -95,9 +95,9 @@ const Footer = () => {
             <div className='footer-bottom max-w-6xl mx-auto'>
                 <p>© 2026 ZorryFash. All rights reserved.</p>
                 <div className='footer-bottom-links'>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Refund Policy</a>
+                    <Link to="/privacy-policy" onClick={() => window.scrollTo(0,0)}>Privacy Policy</Link>
+                    <Link to="/terms" onClick={() => window.scrollTo(0,0)}>Terms of Service</Link>
+                    <Link to="/refund" onClick={() => window.scrollTo(0,0)}>Refund Policy</Link>
                 </div>
             </div>
         </div>
