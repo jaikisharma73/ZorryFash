@@ -12,6 +12,8 @@ const Collection = () => {
   const [category,setCategory] = useState([]);
   const [subCategory,setSubCategory] = useState([]);
   const [sortType,setSortType] = useState('relavent')
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   const toggleCategory = (e) => {
 
@@ -50,6 +52,18 @@ const Collection = () => {
       productsCopy = productsCopy.filter(item => subCategory.includes(item.subCategory))
     }
 
+    if (minPrice || maxPrice) {
+      productsCopy = productsCopy.filter(item => {
+        let itemPrice = item.price;
+        if (item.sizes && item.sizes.length > 0 && typeof item.sizes[0] === 'object' && item.sizes[0].size) {
+            itemPrice = Math.min(...item.sizes.map(s => s.price));
+        }
+        if (minPrice && itemPrice < Number(minPrice)) return false;
+        if (maxPrice && itemPrice > Number(maxPrice)) return false;
+        return true;
+      });
+    }
+
     setFilterProducts(productsCopy)
 
   }
@@ -76,7 +90,7 @@ const Collection = () => {
 
   useEffect(()=>{
       applyFilter();
-  },[category,subCategory,search,showSearch,products])
+  },[category,subCategory,search,showSearch,products,minPrice,maxPrice])
 
   useEffect(()=>{
     sortProduct();
@@ -86,7 +100,7 @@ const Collection = () => {
     <div className='flex flex-col sm:flex-row gap-1 sm:gap-10 pt-10 border-t'>
       
       {/* Filter Options */}
-      <div className='min-w-60'>
+      <div className='w-full sm:w-[30%] md:w-[25%] lg:w-[20%]'>
         <p onClick={()=>setShowFilter(!showFilter)} className='my-2 text-xl flex items-center cursor-pointer gap-2'>FILTERS
           <img className={`h-3 sm:hidden ${showFilter ? 'rotate-90' : ''}`} src={assets.dropdown_icon} alt="" />
         </p>
@@ -118,6 +132,42 @@ const Collection = () => {
             <p className='flex gap-2'>
               <input className='w-3' type="checkbox" value={'Winterwear'} onChange={toggleSubCategory}/> Winterwear
             </p>
+            <p className='flex gap-2'>
+              <input className='w-3' type="checkbox" value={'Jeans'} onChange={toggleSubCategory}/> Jeans
+            </p>
+            <p className='flex gap-2'>
+              <input className='w-3' type="checkbox" value={'Tshirt'} onChange={toggleSubCategory}/> T-Shirt
+            </p>
+            <p className='flex gap-2'>
+              <input className='w-3' type="checkbox" value={'Shirt'} onChange={toggleSubCategory}/> Shirt
+            </p>
+            <p className='flex gap-2'>
+              <input className='w-3' type="checkbox" value={'Kurti'} onChange={toggleSubCategory}/> Kurti
+            </p>
+            <p className='flex gap-2'>
+              <input className='w-3' type="checkbox" value={'Saree'} onChange={toggleSubCategory}/> Saree
+            </p>
+          </div>
+        </div>
+
+        {/* Price Filter */}
+        <div className={`border border-gray-300 px-4 py-3 my-5 ${showFilter ? '' :'hidden'} sm:block`}>
+          <p className='mb-3 text-sm font-medium'>PRICE RANGE (₹)</p>
+          <div className='flex flex-col gap-2'>
+            <input 
+              type="number" 
+              placeholder="Min" 
+              className="w-full border border-gray-300 px-2 py-1 text-sm outline-none"
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+            />
+            <input 
+              type="number" 
+              placeholder="Max" 
+              className="w-full border border-gray-300 px-2 py-1 text-sm outline-none"
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
+            />
           </div>
         </div>
       </div>
