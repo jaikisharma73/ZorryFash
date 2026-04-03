@@ -26,7 +26,15 @@ const Edit = ({ token }) => {
   const [sizePrices, setSizePrices] = useState({})
   const [loading, setLoading] = useState(true)
 
-  const allSizes = ["S", "M", "L", "XL", "XXL"];
+  const allSizes = subCategory === "Jeans" ? ["26", "28", "30", "32", "34", "36"] : ["S", "M", "L", "XL", "XXL"];
+
+  const defaultPrices = {
+    "S": 399,
+    "M": 499,
+    "L": 599,
+    "XL": 699,
+    "XXL": 799
+  };
 
   const toggleSize = (size) => {
     if (sizes.includes(size)) {
@@ -38,6 +46,9 @@ const Edit = ({ token }) => {
       });
     } else {
       setSizes(prev => [...prev, size]);
+      if (defaultPrices[size]) {
+        setSizePrices(prev => ({...prev, [size]: defaultPrices[size]}));
+      }
     }
   }
 
@@ -93,15 +104,17 @@ const Edit = ({ token }) => {
   const onSubmitHandler = async (e) => {
     e.preventDefault()
 
+    const validSizes = sizes.filter(size => allSizes.includes(size));
+
     // Validate that all selected sizes have prices
-    for (const size of sizes) {
+    for (const size of validSizes) {
       if (!sizePrices[size] || sizePrices[size] <= 0) {
         toast.error(`Please enter a price for size ${size}`);
         return;
       }
     }
 
-    if (sizes.length === 0) {
+    if (validSizes.length === 0) {
       toast.error('Please select at least one size');
       return;
     }
@@ -110,7 +123,7 @@ const Edit = ({ token }) => {
       const formData = new FormData()
 
       // Build sizes array with prices
-      const sizesWithPrices = sizes.map(size => ({
+      const sizesWithPrices = validSizes.map(size => ({
         size: size,
         price: Number(sizePrices[size])
       }));
@@ -222,6 +235,11 @@ const Edit = ({ token }) => {
             <option value="Topwear">Topwear</option>
             <option value="Bottomwear">Bottomwear</option>
             <option value="Winterwear">Winterwear</option>
+            <option value="Jeans">Jeans</option>
+            <option value="Tshirt">Tshirt</option>
+            <option value="Shirt">Shirt</option>
+            <option value="Kurti">Kurti</option>
+            <option value="Saree">Saree</option>
           </select>
         </div>
 

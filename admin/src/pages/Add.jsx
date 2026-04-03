@@ -19,7 +19,15 @@ const Add = ({token}) => {
    const [sizes, setSizes] = useState([]);
    const [sizePrices, setSizePrices] = useState({});
 
-   const allSizes = ["S", "M", "L", "XL", "XXL"];
+   const allSizes = subCategory === "Jeans" ? ["26", "28", "30", "32", "34", "36"] : ["S", "M", "L", "XL", "XXL"];
+
+   const defaultPrices = {
+     "S": 399,
+     "M": 499,
+     "L": 599,
+     "XL": 699,
+     "XXL": 799
+   };
 
    const toggleSize = (size) => {
      if (sizes.includes(size)) {
@@ -31,6 +39,9 @@ const Add = ({token}) => {
        });
      } else {
        setSizes(prev => [...prev, size]);
+       if (defaultPrices[size]) {
+         setSizePrices(prev => ({...prev, [size]: defaultPrices[size]}));
+       }
      }
    }
 
@@ -41,15 +52,17 @@ const Add = ({token}) => {
    const onSubmitHandler = async (e) => {
     e.preventDefault();
 
+    const validSizes = sizes.filter(size => allSizes.includes(size));
+
     // Validate that all selected sizes have prices
-    for (const size of sizes) {
+    for (const size of validSizes) {
       if (!sizePrices[size] || sizePrices[size] <= 0) {
         toast.error(`Please enter a price for size ${size}`);
         return;
       }
     }
 
-    if (sizes.length === 0) {
+    if (validSizes.length === 0) {
       toast.error('Please select at least one size');
       return;
     }
@@ -59,7 +72,7 @@ const Add = ({token}) => {
       const formData = new FormData()
 
       // Build sizes array with prices: [{size: "S", price: 500}, ...]
-      const sizesWithPrices = sizes.map(size => ({
+      const sizesWithPrices = validSizes.map(size => ({
         size: size,
         price: Number(sizePrices[size])
       }));
