@@ -7,12 +7,14 @@ const Navbar = () => {
 
     const [visible, setVisible] = useState(false);
 
-    const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems } = useContext(ShopContext);
+    const { setShowSearch, getCartCount, navigate, token, setToken, setCartItems, userData, setUserData } = useContext(ShopContext);
 
     const logout = () => {
         navigate('/login')
         localStorage.removeItem('token')
+        localStorage.removeItem('userData')
         setToken('')
+        setUserData({name:'', email:''})
         setCartItems({})
     }
 
@@ -50,7 +52,11 @@ const Navbar = () => {
                     {/* Dropdown Menu */}
                     {token &&
                         <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
-                            <div className='flex flex-col gap-2 w-36 py-3 px-5  bg-slate-100 text-gray-500 rounded'>
+                            <div className='flex flex-col gap-2 w-48 py-3 px-5  bg-slate-100 text-gray-500 rounded'>
+                                <div className='border-b border-gray-300 pb-2 mb-1'>
+                                    <p className='font-bold text-black'>{userData?.name}</p>
+                                    <p className='text-xs text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap'>{userData?.email}</p>
+                                </div>
                                 <p className='cursor-pointer hover:text-black'>My Profile</p>
                                 <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
                                 <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>

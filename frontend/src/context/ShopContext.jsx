@@ -15,6 +15,9 @@ const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({});
     const [products, setProducts] = useState([]);
     const [token, setToken] = useState('')
+    const [userData, setUserData] = useState(
+        localStorage.getItem('userData') ? JSON.parse(localStorage.getItem('userData')) : { name: '', email: '' }
+    )
     const navigate = useNavigate();
 
 
@@ -165,7 +168,8 @@ const ShopContextProvider = (props) => {
         cartItems, addToCart, setCartItems,
         getCartCount, updateQuantity,
         getCartAmount, navigate, backendUrl,
-        setToken, token
+        setToken, token,
+        userData, setUserData
     }
 
     return (

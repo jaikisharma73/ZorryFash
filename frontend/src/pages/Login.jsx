@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 const Login = () => {
 
   const [currentState, setCurrentState] = useState('Login');
-  const { token, setToken, navigate, backendUrl } = useContext(ShopContext)
+  const { token, setToken, navigate, backendUrl, setUserData } = useContext(ShopContext)
 
   const [name,setName] = useState('')
   const [password,setPasword] = useState('')
@@ -21,6 +21,9 @@ const Login = () => {
           if (response.data.success) {
             setToken(response.data.token)
             localStorage.setItem('token',response.data.token)
+            const userInfo = { name: response.data.name, email: response.data.email };
+            setUserData(userInfo)
+            localStorage.setItem('userData', JSON.stringify(userInfo))
           } else {
             toast.error(response.data.message)
           }
@@ -31,6 +34,9 @@ const Login = () => {
           if (response.data.success) {
             setToken(response.data.token)
             localStorage.setItem('token',response.data.token)
+            const userInfo = { name: response.data.name, email: response.data.email };
+            setUserData(userInfo)
+            localStorage.setItem('userData', JSON.stringify(userInfo))
           } else {
             toast.error(response.data.message)
           }
