@@ -3,15 +3,14 @@ import userModel from '../models/userModel.js';
 import sendEmail from '../utils/email.js';
 
 // Default: Run every hour ('0 * * * *')
-// For testing, this is set to run every minute ('* * * * *')
 const startAbandonedCartJob = () => {
-    cron.schedule('* * * * *', async () => {
+    cron.schedule('0 * * * *', async () => {
         try {
             console.log('Running abandoned cart check...');
             
             // Calculate the threshold time
-            // Currently set to 1 MINUTE for testing purposes
-            const thresholdDate = new Date(Date.now() - 1 * 60 * 1000);
+            // Set to 24 HOURS
+            const thresholdDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
             const usersToRemind = await userModel.find({
                 abandonedReminderSent: false,
