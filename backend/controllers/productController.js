@@ -1,5 +1,6 @@
 import { v2 as cloudinary } from "cloudinary"
 import productModel from "../models/productModel.js"
+import userModel from "../models/userModel.js"
 
 // function for add product
 const addProduct = async (req, res) => {
@@ -134,5 +135,81 @@ const editProduct = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
+// function to add product review
+const addProductReview = async (req, res) => {
+    try {
+        const { rating, comment, userId } = req.body;
+        const productId = req.params.id;
 
-export { listProducts, addProduct, removeProduct, singleProduct, editProduct }
+        const product = await productModel.findById(productId);
+
+        if (!product) {
+            return res.json({ success: false, message: "Product not found" });
+        }
+
+        const alreadyReviewed = product.reviews.find(
+            (r) => r.userId.toString() === userId.toString()
+        );
+
+        if (alreadyReviewed) {
+            return res.json({ success: false, message: "Product already reviewed" });
+        }
+
+        const user = await userModel.findById(userId);
+
+        const review = {
+            name: user.name,
+            userId,
+            rating: Number(rating),
+            comment,
+            date: Date.now()
+        };
+
+        product.reviews.push(review);
+        product.numReviews = product.reviews.length;
+        product.rating =
+            product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+            product.reviews.length;
+
+        await product.save();
+        res.json({ success: true, message: "Review added" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+// function for admin to delete product review
+const deleteProductReview = async (req, res) => {
+    try {
+        const { productId, reviewId } = req.body;
+
+        const product = await productModel.findById(productId);
+
+        if (!product) {
+            return res.json({ success: false, message: "Product not found" });
+        }
+
+        product.reviews = product.reviews.filter(
+            (r) => r._id.toString() !== reviewId.toString()
+        );
+
+        product.numReviews = product.reviews.length;
+
+        if (product.reviews.length > 0) {
+            product.rating =
+                product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+                product.reviews.length;
+        } else {
+            product.rating = 0;
+        }
+
+        await product.save();
+        res.json({ success: true, message: "Review deleted successfully" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+
+export { listProducts, addProduct, removeProduct, singleProduct, editProduct, addProductReview, deleteProductReview }

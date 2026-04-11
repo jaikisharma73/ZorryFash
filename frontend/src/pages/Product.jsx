@@ -3,15 +3,21 @@ import { useParams } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext';
 import { assets } from '../assets/assets';
 import RelatedProducts from '../components/RelatedProducts';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Product = () => {
 
   const { productId } = useParams();
-  const { products, currency ,addToCart } = useContext(ShopContext);
+  const { products, currency ,addToCart, token, backendUrl } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('')
   const [size,setSize] = useState('')
   const [displayPrice, setDisplayPrice] = useState(0)
+  
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [activeTab, setActiveTab] = useState('description');
 
   // Helper: get price for a specific size from the product's sizes array
   const getSizePrice = (product, selectedSize) => {
@@ -66,6 +72,32 @@ const Product = () => {
     }
   }
 
+  const submitReview = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      toast.error('Please login to submit a review');
+      return;
+    }
+    if (!comment) {
+      toast.error('Please enter a comment');
+      return;
+    }
+    try {
+      const response = await axios.post(backendUrl + '/api/product/review/' + productId, { rating, comment }, { headers: { token } });
+      if (response.data.success) {
+        toast.success('Review added successfully');
+        setComment('');
+        setRating(5);
+        // Refresh product data locally or fetch again. Let's just reload the page for simplicity.
+        window.location.reload();
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
   return productData ? (
     <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
       {/*----------- Product Data-------------- */}
@@ -89,12 +121,10 @@ const Product = () => {
         <div className='flex-1'>
           <h1 className='font-medium text-2xl mt-2'>{productData.name}</h1>
           <div className=' flex items-center gap-1 mt-2'>
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_icon} alt="" className="w-3 5" />
-              <img src={assets.star_dull_icon} alt="" className="w-3 5" />
-              <p className='pl-2'>(122)</p>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <img key={star} src={star <= Math.round(productData.rating || 0) ? assets.star_icon : assets.star_dull_icon} alt="" className="w-3 5" />
+              ))}
+              <p className='pl-2'>({productData.numReviews || 0})</p>
           </div>
           <p className='mt-5 text-3xl font-medium'>
             {currency}{displayPrice}
@@ -124,12 +154,64 @@ const Product = () => {
       {/* ---------- Description & Review Section ------------- */}
       <div className='mt-20'>
         <div className='flex'>
-          <b className='border px-5 py-3 text-sm'>Description</b>
-          <p className='border px-5 py-3 text-sm'>Reviews (122)</p>
+          <b onClick={() => setActiveTab('description')} className={`border px-5 py-3 text-sm cursor-pointer ${activeTab === 'description' ? 'font-bold bg-gray-50' : 'font-normal'}`}>Description</b>
+          <p onClick={() => setActiveTab('reviews')} className={`border px-5 py-3 text-sm cursor-pointer ${activeTab === 'reviews' ? 'font-bold bg-gray-50' : 'font-normal'}`}>Reviews ({productData.numReviews || 0})</p>
         </div>
         <div className='flex flex-col gap-4 border px-6 py-6 text-sm text-gray-500'>
-          <p>An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.</p>
-          <p>E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information.</p>
+          {activeTab === 'description' ? (
+            <>
+              <p>{productData.description}</p>
+            </>
+          ) : (
+            <div>
+              {token ? (
+                <form onSubmit={submitReview} className='mb-8 flex flex-col gap-3'>
+                  <h3 className='text-lg font-medium text-black'>Write a Review</h3>
+                  <div className='flex items-center gap-2'>
+                    <label>Rating:</label>
+                    <select value={rating} onChange={(e) => setRating(e.target.value)} className='border p-1'>
+                      <option value="5">5 - Excellent</option>
+                      <option value="4">4 - Very Good</option>
+                      <option value="3">3 - Good</option>
+                      <option value="2">2 - Fair</option>
+                      <option value="1">1 - Poor</option>
+                    </select>
+                  </div>
+                  <textarea 
+                    value={comment} 
+                    onChange={(e) => setComment(e.target.value)} 
+                    placeholder='Write your review here...'
+                    className='border p-3 w-full h-24'
+                    required
+                  ></textarea>
+                  <button type="submit" className='bg-black text-white px-4 py-2 w-max'>Submit Review</button>
+                </form>
+              ) : (
+                <p className='mb-8 text-black'>Please <span className='font-bold underline'>login</span> to write a review.</p>
+              )}
+
+              <div className='flex flex-col gap-4'>
+                {productData.reviews && productData.reviews.length > 0 ? (
+                  productData.reviews.slice().reverse().map((rev, index) => (
+                    <div key={index} className='border-b pb-4'>
+                      <div className='flex items-center gap-2 mb-1'>
+                        <span className='font-bold text-black'>{rev.name}</span>
+                        <div className='flex'>
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <img key={star} src={star <= rev.rating ? assets.star_icon : assets.star_dull_icon} alt="" className="w-3" />
+                          ))}
+                        </div>
+                        <span className='text-xs text-gray-400'>{new Date(rev.date).toLocaleDateString()}</span>
+                      </div>
+                      <p>{rev.comment}</p>
+                    </div>
+                  ))
+                ) : (
+                   <p>No reviews yet.</p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

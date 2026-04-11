@@ -9,7 +9,18 @@ const productSchema = new mongoose.Schema({
     subCategory: { type: String, required: true },
     sizes: { type: Array, required: true },
     bestseller: { type: Boolean },
-    date: { type: Number, required: true }
+    date: { type: Number, required: true },
+    reviews: [
+        {
+            userId: { type: String, required: true },
+            name: { type: String, required: true },
+            rating: { type: Number, required: true },
+            comment: { type: String, required: true },
+            date: { type: Number, required: true }
+        }
+    ],
+    rating: { type: Number, default: 0 },
+    numReviews: { type: Number, default: 0 }
 })
 
 const productModel  = mongoose.models.product || mongoose.model("product",productSchema);
