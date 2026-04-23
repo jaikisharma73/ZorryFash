@@ -17,6 +17,12 @@ const port = process.env.PORT || 4000
 app.use(express.json())
 app.use(cors())
 
+// Ensure DB is connected before handling any requests (Serverless friendly)
+app.use(async (req, res, next) => {
+    await connectDB()
+    next()
+})
+
 // api endpoints
 app.use('/api/user',userRouter)
 app.use('/api/product',productRouter)
