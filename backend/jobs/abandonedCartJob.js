@@ -2,9 +2,9 @@ import cron from 'node-cron';
 import userModel from '../models/userModel.js';
 import sendEmail from '../utils/email.js';
 
-// Default: Run every hour ('0 * * * *')
+// Default: Run every day at midnight ('0 0 * * *')
 const startAbandonedCartJob = () => {
-    cron.schedule('0 * * * *', async () => {
+    cron.schedule('0 0 * * *', async () => {
         try {
             console.log('Running abandoned cart check...');
             
