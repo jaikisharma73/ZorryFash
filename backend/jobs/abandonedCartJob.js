@@ -7,7 +7,7 @@ const startAbandonedCartJob = () => {
     cron.schedule('0 0 * * *', async () => {
         try {
             console.log('Running abandoned cart check...');
-            
+
             // Calculate the threshold time
             // Set to 24 HOURS
             const thresholdDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
@@ -20,9 +20,9 @@ const startAbandonedCartJob = () => {
             for (const user of usersToRemind) {
                 // Ensure cart is actually not empty
                 if (user.cartData && Object.keys(user.cartData).length > 0) {
-                    
-                    const frontendUrl = process.env.FRONTEND_URL || 'https://zorry-fash-frontend.vercel.app';
-                    
+
+                    const frontendUrl = process.env.FRONTEND_URL || 'https://shop-frontend-sandy.vercel.app';
+
                     const emailOptions = {
                         email: user.email,
                         subject: 'Your Cart is Waiting! 🛒',
@@ -38,11 +38,11 @@ const startAbandonedCartJob = () => {
                     };
 
                     await sendEmail(emailOptions);
-                    
+
                     // Mark reminder as sent
                     user.abandonedReminderSent = true;
                     await user.save();
-                    
+
                     console.log(`Abandoned cart email sent to ${user.email}`);
                 }
             }

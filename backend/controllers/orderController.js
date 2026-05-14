@@ -41,10 +41,11 @@ const placeOrder = async (req,res) => {
 
         const user = await userModel.findById(userId);
         if (user && user.email) {
+            const itemsList = items.map(item => `- ${item.name} (Qty: ${item.quantity})`).join('\n');
             await sendEmail({
                 email: user.email,
                 subject: 'Order Confirmation - ZorryFash',
-                message: `Dear ${user.name},\n\nYour order has been successfully placed.\n\nOrder Amount: ₹${amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
+                message: `Dear ${user.name},\n\nYour order has been successfully placed.\n\nProducts Ordered:\n${itemsList}\n\nOrder Amount: ₹${amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
             });
         }
 
@@ -128,10 +129,11 @@ const verifyStripe = async (req,res) => {
             const user = await userModel.findById(userId);
             const order = await orderModel.findById(orderId);
             if (user && user.email && order) {
+                const itemsList = order.items.map(item => `- ${item.name} (Qty: ${item.quantity})`).join('\n');
                 await sendEmail({
                     email: user.email,
                     subject: 'Order Confirmation - ZorryFash',
-                    message: `Dear ${user.name},\n\nYour payment was successful and your order has been placed.\n\nOrder Amount: ₹${order.amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
+                    message: `Dear ${user.name},\n\nYour payment was successful and your order has been placed.\n\nProducts Ordered:\n${itemsList}\n\nOrder Amount: ₹${order.amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
                 });
             }
 
@@ -214,10 +216,11 @@ const verifyRazorpay = async (req,res) => {
             const user = await userModel.findById(userId);
             const order = await orderModel.findById(orderInfo.receipt);
             if (user && user.email && order) {
+                const itemsList = order.items.map(item => `- ${item.name} (Qty: ${item.quantity})`).join('\n');
                 await sendEmail({
                     email: user.email,
                     subject: 'Order Confirmation - ZorryFash',
-                    message: `Dear ${user.name},\n\nYour payment was successful and your order has been placed.\n\nOrder Amount: ₹${order.amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
+                    message: `Dear ${user.name},\n\nYour payment was successful and your order has been placed.\n\nProducts Ordered:\n${itemsList}\n\nOrder Amount: ₹${order.amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
                 });
             }
 
