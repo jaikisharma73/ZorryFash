@@ -44,6 +44,21 @@ const Orders = ({ token }) => {
     }
   }
 
+  const paymentStatusHandler = async ( event, orderId ) => {
+    try {
+      const paymentValue = event.target.value === 'true';
+      const response = await axios.post(backendUrl + '/api/order/payment-status' , {orderId, payment: paymentValue}, { headers: {token}})
+      if (response.data.success) {
+        await fetchAllOrders()
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      console.log(error)
+      toast.error(error.message)
+    }
+  }
+
   useEffect(() => {
     fetchAllOrders();
   }, [token])
@@ -77,7 +92,13 @@ const Orders = ({ token }) => {
               <div>
                 <p className='text-sm sm:text-[15px]'>Items : {order.items.length}</p>
                 <p className='mt-3'>Method : {order.paymentMethod}</p>
-                <p>Payment : { order.payment ? 'Done' : 'Pending' }</p>
+                <div className='flex items-center gap-2 mt-1'>
+                  <p>Payment :</p>
+                  <select onChange={(event)=>paymentStatusHandler(event,order._id)} value={order.payment} className='p-1 font-semibold border'>
+                    <option value={false}>Pending</option>
+                    <option value={true}>Done</option>
+                  </select>
+                </div>
                 <p>Date : {new Date(order.date).toLocaleDateString()}</p>
               </div>
               <p className='text-sm sm:text-[15px]'>{currency}{order.amount}</p>

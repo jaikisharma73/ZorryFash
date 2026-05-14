@@ -1,7 +1,9 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import sendEmail from "../utils/email.js";
 import Stripe from 'stripe'
 import razorpay from 'razorpay'
+import crypto from 'crypto'
 
 // global variables
 const currency = 'inr'
@@ -36,6 +38,15 @@ const placeOrder = async (req,res) => {
         await newOrder.save()
 
         await userModel.findByIdAndUpdate(userId,{cartData:{}})
+
+        const user = await userModel.findById(userId);
+        if (user && user.email) {
+            await sendEmail({
+                email: user.email,
+                subject: 'Order Confirmation - ZorryFash',
+                message: `Dear ${user.name},\n\nYour order has been successfully placed.\n\nOrder Amount: ₹${amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
+            });
+        }
 
         res.json({success:true,message:"Order Placed"})
 
@@ -113,6 +124,17 @@ const verifyStripe = async (req,res) => {
         if (success === "true") {
             await orderModel.findByIdAndUpdate(orderId, {payment:true});
             await userModel.findByIdAndUpdate(userId, {cartData: {}})
+
+            const user = await userModel.findById(userId);
+            const order = await orderModel.findById(orderId);
+            if (user && user.email && order) {
+                await sendEmail({
+                    email: user.email,
+                    subject: 'Order Confirmation - ZorryFash',
+                    message: `Dear ${user.name},\n\nYour payment was successful and your order has been placed.\n\nOrder Amount: ₹${order.amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
+                });
+            }
+
             res.json({success: true});
         } else {
             await orderModel.findByIdAndDelete(orderId)
@@ -145,6 +167,10 @@ const placeOrderRazorpay = async (req,res) => {
         const newOrder = new orderModel(orderData)
         await newOrder.save()
 
+        if (amount * 100 < 100) {
+            return res.status(400).json({ success: false, message: "Amount must be at least ₹1" });
+        }
+
         const options = {
             amount: amount * 100,
             currency: currency.toUpperCase(),
@@ -168,15 +194,36 @@ const placeOrderRazorpay = async (req,res) => {
 const verifyRazorpay = async (req,res) => {
     try {
         
-        const { userId, razorpay_order_id  } = req.body
+        const { userId, razorpay_order_id, razorpay_payment_id, razorpay_signature  } = req.body
 
-        const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
-        if (orderInfo.status === 'paid') {
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+             return res.status(400).json({ success: false, message: 'Missing fields' });
+        }
+
+        const sign = razorpay_order_id + "|" + razorpay_payment_id;
+        const expectedSign = crypto
+            .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+            .update(sign.toString())
+            .digest("hex");
+
+        if (razorpay_signature === expectedSign) {
+            const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id)
             await orderModel.findByIdAndUpdate(orderInfo.receipt,{payment:true});
             await userModel.findByIdAndUpdate(userId,{cartData:{}})
+
+            const user = await userModel.findById(userId);
+            const order = await orderModel.findById(orderInfo.receipt);
+            if (user && user.email && order) {
+                await sendEmail({
+                    email: user.email,
+                    subject: 'Order Confirmation - ZorryFash',
+                    message: `Dear ${user.name},\n\nYour payment was successful and your order has been placed.\n\nOrder Amount: ₹${order.amount}\n\nThank you for shopping with us!\n\nBest Regards,\nZorryFash Team`
+                });
+            }
+
             res.json({ success: true, message: "Payment Successful" })
         } else {
-             res.json({ success: false, message: 'Payment Failed' });
+             res.status(400).json({ success: false, message: 'Invalid signature' });
         }
 
     } catch (error) {
@@ -231,4 +278,19 @@ const updateStatus = async (req,res) => {
     }
 }
 
-export {verifyRazorpay, verifyStripe ,placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus}
+// update order payment status from Admin Panel
+const updatePaymentStatus = async (req,res) => {
+    try {
+        
+        const { orderId, payment } = req.body
+
+        await orderModel.findByIdAndUpdate(orderId, { payment })
+        res.json({success:true,message:'Payment Status Updated'})
+
+    } catch (error) {
+        console.log(error)
+        res.json({success:false,message:error.message})
+    }
+}
+
+export {verifyRazorpay, verifyStripe ,placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus, updatePaymentStatus}
