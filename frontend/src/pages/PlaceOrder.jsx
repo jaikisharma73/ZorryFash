@@ -67,6 +67,14 @@ const PlaceOrder = () => {
                     if (cartItems[items][item] > 0) {
                         const itemInfo = structuredClone(products.find(product => product._id === items))
                         if (itemInfo) {
+                            // Check if product has size-wise pricing
+                            if (itemInfo.sizes && itemInfo.sizes.length > 0 && typeof itemInfo.sizes[0] === 'object' && itemInfo.sizes[0].size) {
+                                const sizeData = itemInfo.sizes.find(s => s.size === item);
+                                if (sizeData) {
+                                    itemInfo.price = sizeData.price;
+                                }
+                            }
+                            
                             itemInfo.size = item
                             itemInfo.quantity = cartItems[items][item]
                             orderItems.push(itemInfo)

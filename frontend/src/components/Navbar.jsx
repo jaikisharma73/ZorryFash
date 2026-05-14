@@ -57,7 +57,7 @@ const Navbar = () => {
                                     <p className='font-bold text-black'>{userData?.name}</p>
                                     <p className='text-xs text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap'>{userData?.email}</p>
                                 </div>
-                                <p className='cursor-pointer hover:text-black'>My Profile</p>
+                                <p onClick={() => navigate('/profile')} className='cursor-pointer hover:text-black'>My Profile</p>
                                 <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-black'>Orders</p>
                                 <p onClick={logout} className='cursor-pointer hover:text-black'>Logout</p>
                             </div>
