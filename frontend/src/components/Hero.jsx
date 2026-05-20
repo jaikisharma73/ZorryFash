@@ -72,13 +72,13 @@ const Hero = () => {
 
   return (
     <div>
-      <div className="relative w-full h-screen overflow-hidden mt-0 mb-10">
+      <div className="relative w-full h-screen mt-0 mb-10">
         <img
           src={assets.zorry}
           className="absolute inset-0 w-full h-full object-cover object-center"
           alt="Hero background"
         />
-        <div className="absolute inset-0 bg-black/40"></div>
+
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-10">
           <h1 className="prata-regular text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-6 max-w-4xl" style={{ animation: 'heroTextReveal 0.8s ease-out 0.2s forwards', opacity: 0 }}>
