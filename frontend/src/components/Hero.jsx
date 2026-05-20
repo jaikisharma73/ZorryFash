@@ -42,7 +42,7 @@ const Hero = () => {
     goToSlide((currentSlide + 1) % slides.length)
   }, [currentSlide, goToSlide])
 
-  // Auto-advance
+
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((prev) => {
@@ -56,7 +56,6 @@ const Hero = () => {
     return () => clearInterval(interval)
   }, [nextSlide])
 
-  // Reset text animation key
   const [animKey, setAnimKey] = useState(0)
   useEffect(() => {
     setAnimKey((prev) => prev + 1)
@@ -73,10 +72,27 @@ const Hero = () => {
 
   return (
     <div>
-      {/* Main Hero Slider */}
-      <div className="flex flex-col sm:flex-row mt-0 mb-10 overflow-hidden relative h-[80vh] sm:h-[76vh]" style={{ margin: '0 -16px', marginTop: '-20px' }}>
+      <div className="relative w-full h-screen overflow-hidden mt-0 mb-10">
+        <img
+          src={assets.zorry}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          alt="Hero background"
+        />
+        <div className="absolute inset-0 bg-black/40"></div>
 
-        {/* Mobile Background Image Slider - Hidden on Desktop */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-10">
+          <h1 className="prata-regular text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-6 max-w-4xl" style={{ animation: 'heroTextReveal 0.8s ease-out 0.2s forwards', opacity: 0 }}>
+          </h1>
+          <div style={{ animation: 'heroTextReveal 0.8s ease-out 0.6s forwards', opacity: 0 }}>
+            <Link to="/collection" className="bg-transparent hover:bg-transparent text-white px-8 py-3 transition-all duration-300 font-semibold tracking-wider uppercase inline-block border border-transparent hover:border-white mt-60">
+              SHOP NOW
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Section 2: Previous Hero Slider */}
+      <div className="flex flex-col sm:flex-row mt-0 mb-10 overflow-hidden relative h-[80vh] sm:h-[76vh]">
         <div className="absolute inset-0 sm:hidden z-0">
           {slides.map((slide, index) => (
             <div
@@ -88,13 +104,10 @@ const Hero = () => {
                 className="w-full h-full object-contain object-center"
                 alt={slide.title}
               />
-              {/* Light overlay to make text readable on mobile */}
               <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/70 to-white/30" />
             </div>
           ))}
         </div>
-
-        {/* Left Side: Text Content */}
         <div className="w-full sm:w-1/2 flex items-center justify-center p-8 sm:p-12 relative z-10 bg-transparent sm:bg-white h-full" key={animKey}>
           <div className="max-w-md w-full">
             <div className="flex items-center gap-2 mb-4" style={{ animation: 'heroTextReveal 0.8s ease-out 0s forwards', opacity: 0 }}>
@@ -118,7 +131,7 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Dots Indicator */}
+
           <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-3 z-20">
             {slides.map((_, index) => (
               <button
@@ -130,11 +143,9 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Progress Bar */}
           <div className="absolute bottom-0 left-0 h-[3px] bg-[#b08a5b] transition-all duration-75 z-20" style={{ width: `${progress}%` }} />
         </div>
 
-        {/* Right Side: Image Slider (Desktop Only) */}
         <div className="hidden sm:block w-full sm:w-1/2 h-full relative overflow-hidden bg-white">
           {slides.map((slide, index) => (
             <div
@@ -151,8 +162,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Marquee Banner */}
-      <div className="marquee-banner" style={{ margin: '0 -16px' }}>
+      <div className="marquee-banner">
         <div className="marquee-track">
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <span className="marquee-item" key={i}>

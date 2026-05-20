@@ -6,11 +6,11 @@ import OurPolicy from '../components/OurPolicy'
 
 const Home = () => {
   return (
-    <div>
+    <div className="-mx-4 sm:-mx-[5vw] md:-mx-[7vw] lg:-mx-[9vw]">
       <Hero />
-      <LatestCollection/>
-      <BestSeller/>
-      <OurPolicy/>
+      <LatestCollection />
+      <BestSeller />
+      <OurPolicy />
     </div>
   )
 }

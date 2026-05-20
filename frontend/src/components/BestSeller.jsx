@@ -33,8 +33,7 @@ const BestSeller = () => {
     }, []);
 
     return (
-        <div ref={sectionRef} className='py-16'>
-            {/* Section Header */}
+        <div ref={sectionRef} className='py-16 px-[7px]'>
             <div className={`section-title-wrapper animate-on-scroll ${isVisible ? 'visible' : ''}`}>
                 <p className="section-label">Customer Favorites</p>
                 <div className='text-center text-3xl'>
@@ -42,13 +41,11 @@ const BestSeller = () => {
                 </div>
                 <div className="section-line" />
                 <p className='section-desc'>
-                    Discover what everyone's loving right now. Our best sellers are the pieces our customers 
-                    can't stop raving about — timeless designs, perfect fits, and unbeatable quality that 
+                    Discover what everyone's loving right now. Our best sellers are the pieces our customers
+                    can't stop raving about — timeless designs, perfect fits, and unbeatable quality that
                     keeps them coming back for more.
                 </p>
             </div>
-
-            {/* Products Grid */}
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-8'>
                 {
                     bestSeller.map((item, index) => (

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const Footer = () => {
     return (
-        <div className='footer-section' style={{ margin: '0 -16px', marginBottom: '-1px' }}>
+        <div className='footer-section -mx-4 sm:-mx-[5vw] md:-mx-[7vw] lg:-mx-[9vw]' style={{ marginBottom: '-1px' }}>
             <div className='footer-grid max-w-6xl mx-auto'>
                 {/* Brand Column */}
                 <div className='footer-brand'>

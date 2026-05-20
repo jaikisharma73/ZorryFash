@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { ShopContext } from '../context/ShopContext';
 import axios from 'axios';
-
+import { useLocation } from 'react-router-dom';
 const Chatbot = () => {
     const { backendUrl, currency, navigate } = useContext(ShopContext);
     
@@ -11,6 +11,29 @@ const Chatbot = () => {
     const [isLoading, setIsLoading] = useState(false);
     
     const messagesEndRef = useRef(null);
+
+    const location = useLocation();
+    const isHome = location.pathname === '/';
+    const [showButton, setShowButton] = useState(!isHome);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (isHome) {
+                // Show after scrolling past 80% of the viewport (the first hero image)
+                if (window.scrollY > window.innerHeight * 0.8) {
+                    setShowButton(true);
+                } else {
+                    setShowButton(false);
+                }
+            } else {
+                setShowButton(true);
+            }
+        };
+
+        handleScroll();
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [isHome]);
 
     // Initial greeting message
     const initialWelcomeMessage = {
@@ -131,7 +154,7 @@ const Chatbot = () => {
     return (
         <>
             {/* Floating Chat Button */}
-            {!isOpen && (
+            {!isOpen && showButton && (
                 <button
                     onClick={() => setIsOpen(true)}
                     className="fixed bottom-6 right-6 z-50 bg-[#c8a06e] text-white p-4 rounded-full shadow-lg shadow-[#c8a06e]/30 hover:scale-110 hover:bg-[#b08a5b] active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center group"

@@ -32,8 +32,7 @@ const LatestCollection = () => {
     }, []);
 
     return (
-        <div ref={sectionRef} className='py-16'>
-            {/* Section Header */}
+        <div ref={sectionRef} className='py-16 px-[7px]'>
             <div className={`section-title-wrapper animate-on-scroll ${isVisible ? 'visible' : ''}`}>
                 <p className="section-label">Fresh Drops</p>
                 <div className='text-center text-3xl'>
@@ -41,13 +40,12 @@ const LatestCollection = () => {
                 </div>
                 <div className="section-line" />
                 <p className='section-desc'>
-                    Stay ahead of the curve with our newest arrivals. From everyday essentials to statement pieces, 
-                    our latest collection brings you fashion-forward designs crafted with premium fabrics and 
+                    Stay ahead of the curve with our newest arrivals. From everyday essentials to statement pieces,
+                    our latest collection brings you fashion-forward designs crafted with premium fabrics and
                     meticulous attention to detail.
                 </p>
             </div>
 
-            {/* Products Grid */}
             <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-8'>
                 {
                     latestProducts.map((item, index) => (
