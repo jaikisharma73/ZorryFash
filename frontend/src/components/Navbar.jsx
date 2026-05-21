@@ -35,8 +35,8 @@ const Navbar = () => {
   }
 
   // Navbar text always black; hover gray
-  const tagColor = 'text-black';
-  const tagHover = 'text-gray-500';
+  const tagColor = 'text-gray-300';
+  const tagHover = 'text-black';
 
   // Background: home uses transparent, others always white
   const bgClass = isHome ? 'bg-transparent' : 'bg-white shadow-sm';
@@ -63,9 +63,9 @@ const Navbar = () => {
         </NavLink>
       </ul>
       <div className='flex items-center gap-6 ml-auto'>
-        <img onClick={() => { setShowSearch(true); navigate('/collection') }} src={assets.search_icon} className='w-5 cursor-pointer' alt="" />
+        <img onClick={() => { setShowSearch(true); navigate('/collection') }} src={assets.search_icon} className='w-5 cursor-pointer invert' alt="" />
         <div className='group relative'>
-          <img onClick={() => token ? null : navigate('/login')} className='w-5 cursor-pointer' src={assets.profile_icon} alt="" />
+          <img onClick={() => token ? null : navigate('/login')} className='w-5 cursor-pointer invert' src={assets.profile_icon} alt="" />
           {token && (
             <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50'>
               <div className='flex flex-col gap-2 w-48 py-3 px-5  bg-slate-100 text-gray-500 rounded'>
@@ -81,10 +81,10 @@ const Navbar = () => {
           )}
         </div>
         <Link to='/cart' className='relative group/cart'>
-          <img src={assets.cart_icon} className='w-5 min-w-5' alt="" />
-          <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-black text-white aspect-square rounded-full text-[8px] font-bold'>{getCartCount()}</p>
+          <img src={assets.cart_icon} className='w-5 min-w-5 invert' alt="" />
+          <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-white text-black aspect-square rounded-full text-[8px] font-bold'>{getCartCount()}</p>
         </Link>
-        <img onClick={() => setVisible(true)} src={assets.menu_icon} className='w-5 cursor-pointer sm:hidden' alt="" />
+        <img onClick={() => setVisible(true)} src={assets.menu_icon} className='w-5 cursor-pointer sm:hidden invert' alt="" />
       </div>
       {/* Sidebar menu for small screens */}
       <div className={`fixed top-0 right-0 bottom-0 overflow-hidden bg-white z-50 transition-all ${visible ? 'w-full' : 'w-0'}`}>

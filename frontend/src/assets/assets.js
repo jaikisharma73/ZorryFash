@@ -61,6 +61,8 @@ import z111 from './z11.avif'
 import z122 from './z12.avif'
 import g1 from './555.jpg'
 import g2 from './666.jpg'
+import herovid from './vedio.webm'
+
 
 
 
@@ -85,7 +87,8 @@ import razorpay_logo from './razorpay_logo.png'
 import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
 import zorry from './zorry.png'
-import zorryPort from './zorryPort.png'
+import zorryPort from './hero-port.png'
+import main from './maini.png'
 
 export const assets = {
     logo,
@@ -94,10 +97,12 @@ export const assets = {
     z22,
     z111,
     z122,
+    herovid,
     z33,
     z44,
     g1,
     g2,
+    main,
     zorry,
     zorryPort,
     hero_img2,

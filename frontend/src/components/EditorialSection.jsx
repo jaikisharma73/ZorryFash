@@ -8,7 +8,7 @@ const ImageBlock = ({ src, alt, align, title, text }) => {
   const isRight = align === "right";
 
   return (
-    <div className={`flex flex-col md:flex-row ${isRight ? 'md:flex-row-reverse' : ''} justify-start items-end w-full mb-32`}>
+    <div className={`relative flex flex-col md:flex-row ${isRight ? 'md:flex-row-reverse' : ''} justify-start items-end w-full mb-32`}>
       {/* Image Container */}
       <Link to="/collection" onClick={() => window.scrollTo(0, 0)} className="relative block w-full md:w-auto md:max-w-[550px] flex-shrink-0 cursor-pointer">
         <img
@@ -16,6 +16,9 @@ const ImageBlock = ({ src, alt, align, title, text }) => {
           alt={alt}
           className="w-full h-auto object-cover transition-transform duration-700 ease-out hover:scale-105"
         />
+        {/* Mobile Gradient Overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent md:hidden pointer-events-none" />
+
         {alt && (
           <div className="absolute bottom-4 right-4 bg-white/70 backdrop-blur-sm px-3 py-1 text-sm font-sans tracking-widest text-neutral-800">
             {alt}
@@ -24,9 +27,9 @@ const ImageBlock = ({ src, alt, align, title, text }) => {
       </Link>
 
       {/* Text Container */}
-      <div className={`hidden md:flex w-full max-w-xs flex-col justify-end mt-8 md:mt-0 ${isRight ? 'items-end text-right pr-6 lg:pr-12' : 'items-start text-left pl-6 lg:pl-12'} pb-8`}>
-        {title && <h3 className="font-serif text-base text-black mb-1">{title}</h3>}
-        {text && <p className="font-sans text-neutral-400 leading-relaxed text-[9px] uppercase tracking-[0.2em]">{text}</p>}
+      <div className={`absolute md:relative bottom-3 md:bottom-auto w-full md:w-full md:max-w-xs flex flex-col justify-end z-10 ${isRight ? 'items-end text-right pr-4 md:pr-6 lg:pr-12 right-0' : 'items-start text-left pl-4 md:pl-6 lg:pl-12 left-0'} md:pb-8 pointer-events-none`}>
+        {title && <h3 className="font-serif text-xs md:text-base text-white md:text-black mb-0.5 md:mb-1 drop-shadow-md md:drop-shadow-none">{title}</h3>}
+        {text && <p className="font-sans text-neutral-200 md:text-neutral-400 leading-relaxed text-[7px] md:text-[9px] uppercase tracking-[0.2em] max-w-[85%] md:max-w-full drop-shadow-md md:drop-shadow-none">{text}</p>}
       </div>
     </div>
   );

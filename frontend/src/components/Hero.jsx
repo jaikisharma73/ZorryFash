@@ -80,14 +80,14 @@ const Hero = () => {
           <source media="(max-width: 640px)" srcSet={assets.zorryPort} />
 
           <img
-            src={assets.zorry}
+            src={assets.main}
             alt="Hero background"
             className="
     absolute inset-0
     w-full h-full
     object-cover
-    object-center
-    sm:object-center
+    object-[center_50%]
+    sm:object-top
     scale-[1.02]
   "
           />
@@ -95,7 +95,7 @@ const Hero = () => {
 
         <div className="absolute inset-0 bg-black/10 z-10" />
 
-      <div className="absolute inset-0 z-20 flex flex-col justify-end items-center text-center px-6 pb-[40px] sm:pb-[40px]">
+        <div className="absolute inset-0 z-20 flex flex-col justify-end items-center text-center px-6 pb-[40px] sm:pb-[40px]">
           <Link
             to="/collection"
             className="
@@ -123,17 +123,29 @@ const Hero = () => {
         </div>
       </div>
 
-      <section className="w-full py-16 sm:py-24 lg:py-28 overflow-hidden bg-white">
-        <div className="max-w-[1600px] mx-auto px-5 sm:px-10 lg:px-16">
-          <div className="grid lg:grid-cols-2 gap-14 lg:gap-24 items-center">
+      <section className="relative w-full min-h-screen py-16 sm:py-24 lg:py-28 overflow-hidden flex items-center">
+        {/* Video Background */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0"
+        >
+          <source src={assets.herovid} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-white/40 z-10" />
+
+        <div className="relative z-20 max-w-[1600px] w-full mx-auto px-5 sm:px-10 lg:px-16">
+          <div className="flex flex-col items-center justify-center text-center max-w-5xl mx-auto min-h-[60vh]">
             <div
               key={currentSlide}
               className="
-                order-2 lg:order-1
                 transition-all
                 duration-1000
                 ease-out
                 animate-[fadeUp_1s_ease]
+                flex flex-col items-center
               "
             >
               <p
@@ -142,7 +154,7 @@ const Hero = () => {
                   tracking-[6px]
                   text-[10px]
                   sm:text-xs
-                  text-neutral-500
+                  text-neutral-700
                   mb-5
                   font-medium
                 "
@@ -171,18 +183,19 @@ const Hero = () => {
 
               <p
                 className="
-                  text-neutral-600
+                  text-neutral-800
                   text-sm
                   sm:text-base
                   leading-relaxed
                   max-w-xl
+                  mx-auto
                   mb-10
                 "
               >
                 {slides[currentSlide].desc}
               </p>
 
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap justify-center gap-4">
                 <Link
                   to="/collection"
                   className="
@@ -228,17 +241,16 @@ const Hero = () => {
                 </Link>
               </div>
 
-              <div className="flex items-center gap-4 mt-14">
+              <div className="flex items-center justify-center gap-4 mt-14">
                 {slides.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
                     className={`
                       transition-all duration-500
-                      ${
-                        index === currentSlide
-                          ? "w-16 h-[2px] bg-black"
-                          : "w-8 h-[2px] bg-neutral-300 hover:bg-black"
+                      ${index === currentSlide
+                        ? "w-16 h-[2px] bg-black"
+                        : "w-8 h-[2px] bg-neutral-300 hover:bg-black"
                       }
                     `}
                   />
@@ -246,49 +258,12 @@ const Hero = () => {
               </div>
 
               <div
-                className="mt-5 h-[2px] bg-black transition-all duration-100"
+                className="mt-5 h-[2px] bg-black transition-all duration-100 mx-auto"
                 style={{
                   width: `${progress}%`,
                   maxWidth: "220px",
                 }}
               />
-            </div>
-
-            <div className="order-1 lg:order-2 relative flex items-center justify-center overflow-hidden">
-              <div className="relative w-full h-[420px] sm:h-[620px] lg:h-[760px]">
-                {slides.map((slide, index) => (
-                  <div
-                    key={index}
-                    className={`
-                      absolute inset-0
-                      transition-all
-                      duration-[1600ms]
-                      ease-out
-                      ${
-                        index === currentSlide
-                          ? "opacity-100 translate-x-0 scale-100 z-10"
-                          : "opacity-0 translate-x-16 scale-[1.03] z-0"
-                      }
-                    `}
-                  >
-                    <img
-                      src={slide.image}
-                      alt={slide.title}
-                      className="
-                        w-full
-                        h-full
-                        object-contain
-                        sm:object-cover
-                        object-center
-                        transition-all
-                        duration-[2500ms]
-                        ease-out
-                        hover:scale-[1.02]
-                      "
-                    />
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
