@@ -76,11 +76,13 @@ import razorpay_logo from './razorpay_logo.png'
 import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
 import zorry from './zorry.png'
+import zorryPort from './zorryPort.png'
 
 export const assets = {
     logo,
     hero_img,
     zorry,
+    zorryPort,
     hero_img2,
     hero_img3,
     cart_icon,
