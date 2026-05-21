@@ -9,12 +9,12 @@ import { toast } from 'react-toastify';
 const Product = () => {
 
   const { productId } = useParams();
-  const { products, currency ,addToCart, token, backendUrl } = useContext(ShopContext);
+  const { products, currency, addToCart, token, backendUrl } = useContext(ShopContext);
   const [productData, setProductData] = useState(false);
   const [image, setImage] = useState('')
-  const [size,setSize] = useState('')
+  const [size, setSize] = useState('')
   const [displayPrice, setDisplayPrice] = useState(0)
-  
+
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState('');
   const [activeTab, setActiveTab] = useState('description');
@@ -62,7 +62,19 @@ const Product = () => {
 
   useEffect(() => {
     fetchProductData();
-  }, [productId,products])
+  }, [productId, products])
+
+  useEffect(() => {
+    if (productData) {
+      const scrollToTop = () => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      };
+      scrollToTop();
+      setTimeout(scrollToTop, 10);
+    }
+  }, [productData]);
 
   // Update price when size is selected
   const handleSizeSelect = (selectedSize) => {
@@ -106,14 +118,14 @@ const Product = () => {
         {/*---------- Product Images------------- */}
         <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
           <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full'>
-              {
-                productData.image.map((item,index)=>(
-                  <img onClick={()=>setImage(item)} src={item} key={index} className='w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer' alt="" />
-                ))
-              }
+            {
+              productData.image.map((item, index) => (
+                <img onClick={() => setImage(item)} src={item} key={index} className='w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer' alt="" />
+              ))
+            }
           </div>
           <div className='w-full sm:w-[80%]'>
-              <img className='w-full h-auto' src={image} alt="" />
+            <img className='w-full h-auto' src={image} alt="" />
           </div>
         </div>
 
@@ -121,10 +133,10 @@ const Product = () => {
         <div className='flex-1'>
           <h1 className='font-medium text-2xl mt-2'>{productData.name}</h1>
           <div className=' flex items-center gap-1 mt-2'>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <img key={star} src={star <= Math.round(productData.rating || 0) ? assets.star_icon : assets.star_dull_icon} alt="" className="w-3 5" />
-              ))}
-              <p className='pl-2'>({productData.numReviews || 0})</p>
+            {[1, 2, 3, 4, 5].map((star) => (
+              <img key={star} src={star <= Math.round(productData.rating || 0) ? assets.star_icon : assets.star_dull_icon} alt="" className="w-3 5" />
+            ))}
+            <p className='pl-2'>({productData.numReviews || 0})</p>
           </div>
           <p className='mt-5 text-3xl font-medium'>
             {currency}{displayPrice}
@@ -134,19 +146,19 @@ const Product = () => {
           </p>
           <p className='mt-5 text-gray-500 md:w-4/5'>{productData.description}</p>
           <div className='flex flex-col gap-4 my-8'>
-              <p>Select Size</p>
-              <div className='flex gap-2'>
-                {getSizeNames(productData).map((item,index)=>(
-                  <button onClick={()=>handleSizeSelect(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`} key={index}>{item}</button>
-                ))}
-              </div>
+            <p>Select Size</p>
+            <div className='flex gap-2'>
+              {getSizeNames(productData).map((item, index) => (
+                <button onClick={() => handleSizeSelect(item)} className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`} key={index}>{item}</button>
+              ))}
+            </div>
           </div>
-          <button onClick={()=>addToCart(productData._id,size)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>ADD TO CART</button>
+          <button onClick={() => addToCart(productData._id, size)} className='bg-black text-white px-8 py-3 text-sm active:bg-gray-700'>ADD TO CART</button>
           <hr className='mt-8 sm:w-4/5' />
           <div className='text-sm text-gray-500 mt-5 flex flex-col gap-1'>
-              <p>100% Original product.</p>
-              <p>Cash on delivery is available on this product.</p>
-              <p>Easy return and exchange policy within 7 days.</p>
+            <p>100% Original product.</p>
+            <p>Cash on delivery is available on this product.</p>
+            <p>Easy return and exchange policy within 7 days.</p>
           </div>
         </div>
       </div>
@@ -177,9 +189,9 @@ const Product = () => {
                       <option value="1">1 - Poor</option>
                     </select>
                   </div>
-                  <textarea 
-                    value={comment} 
-                    onChange={(e) => setComment(e.target.value)} 
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
                     placeholder='Write your review here...'
                     className='border p-3 w-full h-24'
                     required
@@ -207,7 +219,7 @@ const Product = () => {
                     </div>
                   ))
                 ) : (
-                   <p>No reviews yet.</p>
+                  <p>No reviews yet.</p>
                 )}
               </div>
             </div>

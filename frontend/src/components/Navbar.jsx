@@ -38,8 +38,8 @@ const Navbar = () => {
   const tagColor = 'text-black';
   const tagHover = 'text-gray-500';
 
-  // Background: home uses scroll logic, others always white
-  const bgClass = isHome ? (scrolled ? 'bg-black shadow-sm' : 'bg-transparent') : 'bg-white shadow-sm';
+  // Background: home uses transparent, others always white
+  const bgClass = isHome ? 'bg-transparent' : 'bg-white shadow-sm';
 
   return (
     <div className={`z-50 flex items-center justify-between pb-5 pt-[10px] font-medium ${isHome ? 'fixed top-0 left-0 w-full px-[8px] z-50' : 'relative -mx-4 sm:-mx-[5vw] md:-mx-[7vw] lg:-mx-[9vw] px-[8px]'} ${bgClass} transition-colors duration-300`}

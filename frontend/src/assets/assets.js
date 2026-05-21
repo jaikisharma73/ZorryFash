@@ -53,6 +53,15 @@ import p_img49 from './p_img49.png'
 import p_img50 from './p_img50.png'
 import p_img51 from './p_img51.png'
 import p_img52 from './p_img52.png'
+import z11 from './z1.jpg'
+import z22 from './z2.jpg'
+import z33 from './z3.jpg'
+import z44 from './z4.jpg'
+import z111 from './z11.avif'
+import z122 from './z12.avif'
+import g1 from './555.jpg'
+import g2 from './666.jpg'
+
 
 
 import logo from './logo.png'
@@ -81,6 +90,14 @@ import zorryPort from './zorryPort.png'
 export const assets = {
     logo,
     hero_img,
+    z11,
+    z22,
+    z111,
+    z122,
+    z33,
+    z44,
+    g1,
+    g2,
     zorry,
     zorryPort,
     hero_img2,

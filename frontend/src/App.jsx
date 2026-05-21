@@ -12,6 +12,7 @@ import Orders from './pages/Orders'
 import Profile from './pages/Profile'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import ScrollToTop from './components/ScrollToTop'
 import SearchBar from './components/SearchBar'
 import Chatbot from './components/Chatbot'
 import { ToastContainer, toast } from 'react-toastify';
@@ -26,6 +27,7 @@ import Refund from './pages/Refund'
 const App = () => {
   return (
     <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
+      <ScrollToTop />
       <ToastContainer />
       <Navbar />
       <SearchBar />

@@ -21,15 +21,11 @@ const Footer = () => {
             text-black/[0.035]
             leading-none
             select-none
-            text-[62px]
-            sm:text-[120px]
-            md:text-[180px]
-            lg:text-[280px]
-            xl:text-[340px]
+            text-[13vw]
           "
           style={{
-            letterSpacing: '0.14em',
-            transform: 'translate(-50%, -50%) scaleX(1.28)',
+            letterSpacing: '0.05em',
+            transform: 'translate(-50%, -50%)',
           }}
         >
           ZORRYFASH
@@ -55,25 +51,25 @@ const Footer = () => {
               everyday confidence.
             </p>
 
-            <div className="flex items-center gap-5 mt-8 flex-wrap">
+            <div className="flex items-center gap-3 mt-8 flex-nowrap">
 
               <a
                 href="#"
-                className="text-[11px] sm:text-xs uppercase tracking-[3px] text-black hover:opacity-50 transition duration-300"
+                className="text-[10px] sm:text-xs uppercase tracking-[1px] sm:tracking-[2px] text-black hover:opacity-50 transition duration-300 whitespace-nowrap"
               >
                 Instagram
               </a>
 
               <a
                 href="#"
-                className="text-[11px] sm:text-xs uppercase tracking-[3px] text-black hover:opacity-50 transition duration-300"
+                className="text-[10px] sm:text-xs uppercase tracking-[1px] sm:tracking-[2px] text-black hover:opacity-50 transition duration-300 whitespace-nowrap"
               >
                 Twitter
               </a>
 
               <a
                 href="#"
-                className="text-[11px] sm:text-xs uppercase tracking-[3px] text-black hover:opacity-50 transition duration-300"
+                className="text-[10px] sm:text-xs uppercase tracking-[1px] sm:tracking-[2px] text-black hover:opacity-50 transition duration-300 whitespace-nowrap"
               >
                 Pinterest
               </a>
