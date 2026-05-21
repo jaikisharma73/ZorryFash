@@ -28,7 +28,6 @@ const Footer = () => {
             xl:text-[340px]
           "
           style={{
-            fontFamily: "'Prata', serif",
             letterSpacing: '0.14em',
             transform: 'translate(-50%, -50%) scaleX(1.28)',
           }}

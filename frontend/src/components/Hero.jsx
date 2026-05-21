@@ -163,7 +163,7 @@ const Hero = () => {
                 "
                 style={{
                   whiteSpace: "pre-line",
-                  fontFamily: "Times New Roman, serif",
+                  // fontFamily: "Prata, serif",
                 }}
               >
                 {slides[currentSlide].title}

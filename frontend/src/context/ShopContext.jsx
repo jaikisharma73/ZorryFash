@@ -101,7 +101,6 @@ const ShopContextProvider = (props) => {
             for (const item in cartItems[items]) {
                 try {
                     if (cartItems[items][item] > 0) {
-                        // Check if product has size-wise pricing (new format)
                         let itemPrice = itemInfo.price;
                         if (itemInfo.sizes && itemInfo.sizes.length > 0 && typeof itemInfo.sizes[0] === 'object' && itemInfo.sizes[0].size) {
                             const sizeData = itemInfo.sizes.find(s => s.size === item);

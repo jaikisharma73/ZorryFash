@@ -7,7 +7,7 @@ import Title from './Title';
 const FloatingCard = ({ product, index, navigate, currency }) => {
   return (
     <motion.div
-      className="relative rounded-2xl overflow-hidden shadow-xl cursor-pointer group"
+      className="relative overflow-hidden shadow-xl cursor-pointer group"
       onClick={() => navigate(`/product/${product._id}`)}
       whileHover={{
         scale: 1.04,
@@ -32,9 +32,6 @@ const FloatingCard = ({ product, index, navigate, currency }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-300" />
 
       <div className="absolute bottom-5 left-5 right-5 z-10">
-        <h3 className="text-white text-lg font-semibold truncate">
-          {product.name}
-        </h3>
         <p className="text-[#c8a06e] text-sm font-medium mt-1">
           {currency}{product.price}
         </p>
