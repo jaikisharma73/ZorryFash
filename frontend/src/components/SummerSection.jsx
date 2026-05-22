@@ -19,6 +19,14 @@ const SummerSection = () => {
           </p>
         </div>
       </div>
+      <div className="absolute inset-0 flex flex-col items-end justify-end pr-4 md:pr-12 pointer-events-none pb-[120px] md:pb-[180px]">
+        <div className="text-right mr-4">
+          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-base mt-12">
+            SUMMER 2026
+          </p>
+          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-base mt-5">Men Lightweight luxury summer wear</p>
+        </div>
+      </div>
     </Link>
     <Link to="/collection" state={{ category: ['Women'] }} onClick={() => window.scrollTo(0, 0)} className="relative block min-h-[100vh] md:min-h-[120vh] w-full cursor-pointer overflow-hidden">
       <img
@@ -34,6 +42,16 @@ const SummerSection = () => {
           </p>
         </div>
       </div>
+      <div className="absolute inset-0 flex flex-col items-end justify-end pr-4 md:pr-12 pointer-events-none pb-[120px] md:pb-[180px]">
+        <div className="text-right mr-4">
+          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-base mt-12">
+            SUMMER 2026
+          </p>
+          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-sm mt-5">
+            Women Lightweight luxury summer wear
+          </p>
+        </div>
+      </div>
     </Link>
     <Link to="/collection" state={{ category: ['Kids'] }} onClick={() => window.scrollTo(0, 0)} className="relative block min-h-[100vh] md:min-h-[120vh] w-full cursor-pointer overflow-hidden">
       <img
@@ -44,8 +62,19 @@ const SummerSection = () => {
       <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
       <div className="absolute inset-0 flex flex-col items-center justify-center pr-4 md:pr-12 pointer-events-none pb-[120px] md:pb-[180px]">
         <div className="text-right mr-4">
-          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-base mt-12">
+          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-sm mt-12">
             Kids
+          </p>
+
+        </div>
+      </div>
+      <div className="absolute inset-0 flex flex-col items-end justify-end pr-4 md:pr-12 pointer-events-none pb-[120px] md:pb-[180px]">
+        <div className="text-right mr-4">
+          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-base mt-12">
+            SUMMER 2026
+          </p>
+          <p className="font-sans uppercase tracking-[0.4em] text-white/80 text-sm md:text-sm mt-5">
+            Kids Lightweight luxury summer wear
           </p>
         </div>
       </div>
