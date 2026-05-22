@@ -74,25 +74,26 @@ const Hero = () => {
   ];
 
   return (
-    <div className="bg-white relative">
-      <div className="absolute inset-0 pointer-events-none z-50">
-        <div className="sticky top-[93vh] md:top-[85vh] w-full flex justify-end pr-4">
-          <div className="text-right -mr-4">
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-8xl bg-gradient-to-r from-white/50 via-white/90 to-white/30 bg-clip-text text-transparent tracking-[0.10em] transition-transform duration-500 ease-out drop-shadow-lg">
-              ZORRY
-            </h1>
+    <>
+      <div className="relative z-20 bg-white">
+        <div className="absolute inset-0 pointer-events-none z-50">
+          <div className="sticky top-[93vh] md:top-[85vh] w-full flex justify-end pr-4">
+            <div className="text-right -mr-4">
+              <h1 className="font-serif text-4xl md:text-6xl lg:text-8xl bg-gradient-to-r from-white/50 via-white/90 to-white/30 bg-clip-text text-transparent tracking-[0.10em] transition-transform duration-500 ease-out drop-shadow-lg">
+                ZORRY
+              </h1>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="relative w-full min-h-screen bg-black overflow-hidden">
-        <picture>
-          <source media="(max-width: 640px)" srcSet={assets.zorryPort} />
+        <div className="relative w-full min-h-screen bg-black overflow-hidden">
+          <picture>
+            <source media="(max-width: 640px)" srcSet={assets.zorryPort} />
 
-          <img
-            src={assets.main}
-            alt="Hero background"
-            className="
+            <img
+              src={assets.main}
+              alt="Hero background"
+              className="
     absolute inset-0
     w-full h-full
     object-cover
@@ -100,40 +101,42 @@ const Hero = () => {
     sm:object-top
     scale-[1.02]
   "
-          />
-        </picture>
+            />
+          </picture>
 
-        <div className="absolute inset-0 bg-black/10 z-10" />
+          <div className="absolute inset-0 bg-black/10 z-10" />
 
-        <div className="absolute inset-0 z-20 flex flex-col justify-end items-center text-center px-6 pb-[40px] sm:pb-[40px]">
-          <Link
-            to="/collection"
-            className="
-              border
-              border-white
-              text-white
-              px-8
-              sm:px-10
-              py-3
-              sm:py-4
-              text-xs
-              sm:text-sm
-              uppercase
-              tracking-[4px]
-              font-medium
-              hover:bg-white
-              hover:text-black
-              transition-all
-              duration-500
-              backdrop-blur-sm
-            "
-          >
-            SHOP NOW
-          </Link>
+          <div className="absolute inset-0 z-20 flex flex-col justify-end items-center text-center px-6 pb-[40px] sm:pb-[40px]">
+            <Link
+              to="/collection"
+              className="
+                border
+                border-white
+                text-white
+                px-8
+                sm:px-10
+                py-3
+                sm:py-4
+                text-xs
+                sm:text-sm
+                uppercase
+                tracking-[4px]
+                font-medium
+                hover:bg-white
+                hover:text-black
+                transition-all
+                duration-500
+                backdrop-blur-sm
+              "
+            >
+              SHOP NOW
+            </Link>
+          </div>
         </div>
       </div>
 
-      <section className="relative w-full min-h-screen py-16 sm:py-24 lg:py-28 overflow-hidden flex items-center">
+      <div className="sticky top-0 z-0 w-full h-screen flex flex-col">
+        <section className="relative flex-1 w-full overflow-hidden flex items-center py-16 sm:py-24 lg:py-28">
         <video
           autoPlay
           loop
@@ -281,31 +284,34 @@ const Hero = () => {
         </div>
       </section>
 
-      <div className="overflow-hidden border-y border-neutral-200 py-5 bg-white">
-        <div className="animate-marquee flex whitespace-nowrap gap-12 w-max">
-          {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span
-              key={i}
-              className="
-          flex
-          items-center
-          gap-3
-          text-[10px]
-          sm:text-xs
-          uppercase
-          tracking-[4px]
-          text-neutral-700
-          flex-shrink-0
-        "
-            >
-              <span className="w-2 h-2 rounded-full bg-black" />
+        <div className="relative z-20 bg-white flex-shrink-0">
+          <div className="overflow-hidden border-y border-neutral-200 py-5 bg-white">
+          <div className="animate-marquee flex whitespace-nowrap gap-12 w-max">
+            {[...marqueeItems, ...marqueeItems].map((item, i) => (
+              <span
+                key={i}
+                className="
+            flex
+            items-center
+            gap-3
+            text-[10px]
+            sm:text-xs
+            uppercase
+            tracking-[4px]
+            text-neutral-700
+            flex-shrink-0
+          "
+              >
+                <span className="w-2 h-2 rounded-full bg-black" />
 
-              {item}
-            </span>
-          ))}
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
