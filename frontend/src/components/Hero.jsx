@@ -74,7 +74,18 @@ const Hero = () => {
   ];
 
   return (
-    <div className="bg-white overflow-hidden">
+    <div className="bg-white relative">
+      {/* Premium Sticky ZORRY Text for Hero */}
+      <div className="absolute inset-0 pointer-events-none z-50">
+        <div className="sticky top-[80vh] md:top-[85vh] w-full flex justify-end pr-6 md:pr-12">
+          <div className="text-right mr-4">
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-8xl text-gray-200 mix-blend-difference tracking-[0.2em] drop-shadow-sm transition-transform duration-500 ease-out">
+              ZORRY
+            </h1>
+          </div>
+        </div>
+      </div>
+
       <div className="relative w-full min-h-screen bg-black overflow-hidden">
         <picture>
           <source media="(max-width: 640px)" srcSet={assets.zorryPort} />

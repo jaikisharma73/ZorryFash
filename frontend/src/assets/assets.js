@@ -88,7 +88,7 @@ import stripe_logo from './stripe_logo.png'
 import cross_icon from './cross_icon.png'
 import zorry from './zorry.png'
 import zorryPort from './hero-port.png'
-import main from './maini.png'
+import main from './zok.png'
 
 export const assets = {
     logo,
