@@ -55,7 +55,7 @@ const Profile = () => {
             </div>
 
             <div className='flex flex-col md:flex-row gap-12'>
-                {/* Profile Info */}
+                
                 <div className='flex-1 border p-6 rounded-md shadow-sm'>
                     <h3 className='text-xl font-medium mb-4'>Account Details</h3>
                     <div className='flex flex-col gap-3 text-gray-700'>
@@ -64,7 +64,7 @@ const Profile = () => {
                     </div>
                 </div>
 
-                {/* Change Password Form */}
+                
                 <div className='flex-1 border p-6 rounded-md shadow-sm'>
                     <h3 className='text-xl font-medium mb-4'>Change Password</h3>
                     <form onSubmit={onSubmitHandler} className='flex flex-col gap-4'>

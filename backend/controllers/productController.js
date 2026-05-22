@@ -1,8 +1,6 @@
 import { v2 as cloudinary } from "cloudinary"
 import productModel from "../models/productModel.js"
-import userModel from "../models/userModel.js"
-
-// function for add product
+import userModel from "../models/userModel.js"
 const addProduct = async (req, res) => {
     try {
 
@@ -45,9 +43,7 @@ const addProduct = async (req, res) => {
         console.log(error)
         res.json({ success: false, message: error.message })
     }
-}
-
-// function for list product
+}
 const listProducts = async (req, res) => {
     try {
         
@@ -58,9 +54,7 @@ const listProducts = async (req, res) => {
         console.log(error)
         res.json({ success: false, message: error.message })
     }
-}
-
-// function for removing product
+}
 const removeProduct = async (req, res) => {
     try {
         
@@ -71,9 +65,7 @@ const removeProduct = async (req, res) => {
         console.log(error)
         res.json({ success: false, message: error.message })
     }
-}
-
-// function for single product info
+}
 const singleProduct = async (req, res) => {
     try {
         
@@ -85,9 +77,7 @@ const singleProduct = async (req, res) => {
         console.log(error)
         res.json({ success: false, message: error.message })
     }
-}
-
-// function for editing product
+}
 const editProduct = async (req, res) => {
     try {
         const { id, name, description, price, category, subCategory, sizes, bestseller } = req.body
@@ -95,9 +85,7 @@ const editProduct = async (req, res) => {
         const product = await productModel.findById(id)
         if (!product) {
             return res.json({ success: false, message: "Product not found" })
-        }
-
-        // Handle new images if uploaded
+        }
         const image1 = req.files?.image1 && req.files.image1[0]
         const image2 = req.files?.image2 && req.files.image2[0]
         const image3 = req.files?.image3 && req.files.image3[0]
@@ -134,8 +122,7 @@ const editProduct = async (req, res) => {
         console.log(error)
         res.json({ success: false, message: error.message })
     }
-}
-// function to add product review
+}
 const addProductReview = async (req, res) => {
     try {
         const { rating, comment, userId } = req.body;
@@ -177,9 +164,7 @@ const addProductReview = async (req, res) => {
         console.log(error);
         res.json({ success: false, message: error.message });
     }
-}
-
-// function for admin to delete product review
+}
 const deleteProductReview = async (req, res) => {
     try {
         const { productId, reviewId } = req.body;

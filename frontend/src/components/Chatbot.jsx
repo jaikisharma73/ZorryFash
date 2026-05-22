@@ -4,12 +4,12 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 const Chatbot = () => {
     const { backendUrl, currency, navigate } = useContext(ShopContext);
-    
+
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([]);
     const [inputText, setInputText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    
+
     const messagesEndRef = useRef(null);
 
     const location = useLocation();
@@ -19,7 +19,6 @@ const Chatbot = () => {
     useEffect(() => {
         const handleScroll = () => {
             if (isHome) {
-                // Show after scrolling past 80% of the viewport (the first hero image)
                 if (window.scrollY > window.innerHeight * 0.8) {
                     setShowButton(true);
                 } else {
@@ -35,14 +34,12 @@ const Chatbot = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isHome]);
 
-    // Initial greeting message
     const initialWelcomeMessage = {
         sender: 'bot',
         text: "Hi there! I'm ZorryFash AI. 🛍️ How can I help you find clothes today?\n\nYou can search for clothes by category, color, or price. Try typing or clicking one of the suggestions below!",
         products: []
     };
 
-    // Load message history from localStorage
     useEffect(() => {
         const storedHistory = localStorage.getItem('zorryfash_chat_history');
         if (storedHistory) {
@@ -56,13 +53,11 @@ const Chatbot = () => {
         }
     }, []);
 
-    // Save message history to localStorage
     const saveMessages = (newMessages) => {
         setMessages(newMessages);
         localStorage.setItem('zorryfash_chat_history', JSON.stringify(newMessages));
     };
 
-    // Auto scroll to bottom
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -73,17 +68,14 @@ const Chatbot = () => {
         }
     }, [messages, isLoading, isOpen]);
 
-    // Handle suggestion chip click
     const handleSuggestionClick = (query) => {
         handleSendMessage(query);
     };
 
-    // Send query to backend
     const handleSendMessage = async (textToSend) => {
         const queryText = textToSend || inputText;
         if (!queryText.trim()) return;
 
-        // Add user message
         const userMsg = { sender: 'user', text: queryText, products: [] };
         const updatedMessages = [...messages, userMsg];
         saveMessages(updatedMessages);
@@ -120,22 +112,19 @@ const Chatbot = () => {
         }
     };
 
-    // Clear history
     const handleClearChat = () => {
         if (window.confirm("Are you sure you want to clear your chat history?")) {
             saveMessages([initialWelcomeMessage]);
         }
     };
 
-    // Parse markdown-like tags (**bold**, [label](url)) safely into JSX
     const parseMarkdown = (text) => {
         if (!text) return '';
 
-        // Match parts to dynamically construct React elements
-        // Splitting by bold ** text
+
         const boldRegex = /\*\*(.*?)\*\*/g;
         const linkRegex = /\[(.*?)\]\((.*?)\)/g;
-        
+
         let html = text
             .replace(boldRegex, '<strong>$1</strong>')
             .replace(linkRegex, '<a href="$2" class="underline text-[#c8a06e] font-semibold hover:text-[#b08a5b]">$1</a>')
@@ -153,26 +142,24 @@ const Chatbot = () => {
 
     return (
         <>
-            {/* Floating Chat Button */}
             {!isOpen && showButton && (
                 <button
                     onClick={() => setIsOpen(true)}
-                    className="fixed bottom-6 right-6 z-50 bg-[#c8a06e] text-white p-4 rounded-full shadow-lg shadow-[#c8a06e]/30 hover:scale-110 hover:bg-[#b08a5b] active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center group"
+                    className="fixed bottom-6 left-6 z-50 bg-[#c8a06e] text-white p-4 rounded-full shadow-lg shadow-[#c8a06e]/30 hover:scale-110 hover:bg-[#b08a5b] active:scale-95 transition-all duration-300 cursor-pointer flex items-center justify-center group"
                     aria-label="Open Chatbot"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 0 1-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8Z" />
                     </svg>
-                    <span className="absolute right-14 bg-black text-white text-xs px-2.5 py-1 rounded shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <span className="absolute left-14 bg-black text-white text-xs px-2.5 py-1 rounded shadow-md whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         Chat with ZorryFash AI
                     </span>
                 </button>
             )}
 
-            {/* Chatbot Window */}
             {isOpen && (
-                <div className="fixed bottom-0 right-0 w-full h-[85vh] sm:w-[380px] sm:h-[550px] sm:bottom-24 sm:right-6 z-50 bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-slideInScale">
-                    {/* Header */}
+                <div className="fixed bottom-0 left-0 w-full h-[85vh] sm:w-[380px] sm:h-[550px] sm:bottom-24 sm:left-6 z-50 bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden animate-slideInScale">
+                    
                     <div className="bg-black text-white px-4 py-3 flex items-center justify-between border-b border-[#c8a06e]/20">
                         <div className="flex items-center gap-2.5">
                             <div className="w-8 h-8 rounded-full bg-[#c8a06e] flex items-center justify-center font-bold text-black text-sm">
@@ -187,8 +174,8 @@ const Chatbot = () => {
                             </div>
                         </div>
                         <div className="flex items-center gap-3">
-                            {/* Clear History Button */}
-                            <button 
+                            
+                            <button
                                 onClick={handleClearChat}
                                 className="text-gray-400 hover:text-red-400 transition-colors p-1 rounded hover:bg-gray-800"
                                 title="Clear Chat History"
@@ -197,7 +184,7 @@ const Chatbot = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                 </svg>
                             </button>
-                            {/* Close Window Button */}
+                            
                             <button
                                 onClick={() => setIsOpen(false)}
                                 className="text-gray-400 hover:text-white transition-colors p-1 rounded hover:bg-gray-800"
@@ -210,21 +197,20 @@ const Chatbot = () => {
                         </div>
                     </div>
 
-                    {/* Messages Area */}
+                    
                     <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
                         {messages.map((msg, index) => (
                             <div key={index} className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
                                 <div
-                                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm shadow-sm ${
-                                        msg.sender === 'user'
-                                            ? 'bg-[#c8a06e] text-white rounded-tr-none'
-                                            : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
-                                    }`}
+                                    className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm shadow-sm ${msg.sender === 'user'
+                                        ? 'bg-[#c8a06e] text-white rounded-tr-none'
+                                        : 'bg-white text-gray-800 border border-gray-100 rounded-tl-none'
+                                        }`}
                                 >
                                     {parseMarkdown(msg.text)}
                                 </div>
 
-                                {/* Render products carousel if bot returned any */}
+                                
                                 {msg.products && msg.products.length > 0 && (
                                     <div className="w-full mt-3 overflow-x-auto py-2 -mx-2 px-2 flex gap-3 scrollbar-hide">
                                         {msg.products.map((product) => (
@@ -251,7 +237,7 @@ const Chatbot = () => {
                                                         <p className="text-[#c8a06e] text-xs font-bold mb-1">
                                                             {currency}{product.price}
                                                         </p>
-                                                        <button 
+                                                        <button
                                                             className="w-full text-center py-1 bg-black text-white text-[9px] font-bold rounded hover:bg-[#c8a06e] hover:text-black transition-colors"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
@@ -270,7 +256,6 @@ const Chatbot = () => {
                             </div>
                         ))}
 
-                        {/* Loading Typing Indicator */}
                         {isLoading && (
                             <div className="flex flex-col items-start">
                                 <div className="bg-white text-gray-400 border border-gray-100 rounded-2xl rounded-tl-none px-4 py-3 text-sm shadow-sm flex items-center gap-1">
@@ -284,7 +269,7 @@ const Chatbot = () => {
                         <div ref={messagesEndRef} />
                     </div>
 
-                    {/* Suggestion Chips */}
+                    
                     {messages.length <= 2 && !isLoading && (
                         <div className="px-4 py-2 bg-slate-50 border-t border-gray-100 overflow-x-auto flex gap-2 scrollbar-hide whitespace-nowrap">
                             {suggestions.map((sug, idx) => (
@@ -299,7 +284,7 @@ const Chatbot = () => {
                         </div>
                     )}
 
-                    {/* Input Send Area */}
+                    
                     <form
                         onSubmit={(e) => {
                             e.preventDefault();
@@ -318,11 +303,10 @@ const Chatbot = () => {
                         <button
                             type="submit"
                             disabled={!inputText.trim() || isLoading}
-                            className={`p-2.5 rounded-full transition-all cursor-pointer flex items-center justify-center ${
-                                inputText.trim() && !isLoading
-                                    ? 'bg-black text-white hover:bg-[#c8a06e] hover:text-black'
-                                    : 'bg-gray-100 text-gray-300 cursor-not-allowed'
-                            }`}
+                            className={`p-2.5 rounded-full transition-all cursor-pointer flex items-center justify-center ${inputText.trim() && !isLoading
+                                ? 'bg-black text-white hover:bg-[#c8a06e] hover:text-black'
+                                : 'bg-gray-100 text-gray-300 cursor-not-allowed'
+                                }`}
                             aria-label="Send Message"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">

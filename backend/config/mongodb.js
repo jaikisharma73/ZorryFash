@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
-
-// Disable buffering (important for debugging)
+const MONGODB_URI = process.env.MONGODB_URI;
 mongoose.set("bufferCommands", false);
 
 let cached = global.mongoose;

@@ -59,7 +59,6 @@ const Add = ({token}) => {
 
     const validSizes = sizes.filter(size => allSizes.includes(size));
 
-    // Validate that all selected sizes have prices
     for (const size of validSizes) {
       if (!sizePrices[size] || sizePrices[size] <= 0) {
         toast.error(`Please enter a price for size ${size}`);
@@ -76,13 +75,11 @@ const Add = ({token}) => {
       
       const formData = new FormData()
 
-      // Build sizes array with prices: [{size: "S", price: 500}, ...]
       const sizesWithPrices = validSizes.map(size => ({
         size: size,
         price: Number(sizePrices[size])
       }));
 
-      // Use the lowest size price as the default product price
       const defaultPrice = Math.min(...sizesWithPrices.map(s => s.price));
 
       formData.append("name",name)
@@ -193,7 +190,7 @@ const Add = ({token}) => {
             ))}
           </div>
 
-          {/* Price inputs for selected sizes */}
+          
           {sizes.length > 0 && (
             <div className='mt-4 flex flex-col gap-2'>
               <p className='text-sm font-medium text-gray-600'>Set price for each size:</p>

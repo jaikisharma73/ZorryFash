@@ -10,7 +10,6 @@ const Navbar = () => {
   const isHome = location.pathname === '/';
   const isOther = !isHome;
 
-  // Sticky scroll only for home page
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
@@ -34,34 +33,25 @@ const Navbar = () => {
     setCartItems({})
   }
 
-  // Navbar text always black; hover gray
   const tagColor = 'text-gray-300';
   const tagHover = 'text-black';
 
-  // Background: home uses transparent, others always white
   const bgClass = isHome ? 'bg-transparent' : 'bg-white shadow-sm';
 
   return (
     <div className={`z-50 flex items-center justify-between pb-5 pt-[10px] font-medium ${isHome ? 'fixed top-0 left-0 w-full px-[8px] z-50' : 'relative -mx-4 sm:-mx-[5vw] md:-mx-[7vw] lg:-mx-[9vw] px-[8px]'} ${bgClass} transition-colors duration-300`}
     >
-      <ul className='hidden sm:flex gap-5 text-sm'>
-        <NavLink to='/' className='flex flex-col items-center gap-1 group'>
-          <p className={`${tagColor} group-hover:${tagHover} transition-colors duration-300`}>HOME</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
-        </NavLink>
-        <NavLink to='/collection' className='flex flex-col items-center gap-1 group'>
-          <p className={`${tagColor} group-hover:${tagHover} transition-colors duration-300`}>COLLECTION</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
-        </NavLink>
-        <NavLink to='/about' className='flex flex-col items-center gap-1 group'>
-          <p className={`${tagColor} group-hover:${tagHover} transition-colors duration-300`}>ABOUT</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
-        </NavLink>
-        <NavLink to='/contact' className='flex flex-col items-center gap-1 group'>
-          <p className={`${tagColor} group-hover:${tagHover} transition-colors duration-300`}>CONTACT</p>
-          <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
-        </NavLink>
-      </ul>
+      <div className='flex items-center relative'>
+        <img onClick={() => setVisible(!visible)} src={assets.menu_icon} className='w-6 cursor-pointer invert hover:opacity-80 transition-opacity relative z-[101]' alt="Menu" />
+
+        
+        <div className={`absolute left-10 top-1/2 -translate-y-1/2 flex items-center justify-between w-[240px] sm:w-[320px] md:w-[400px] text-[10px] sm:text-xs md:text-sm font-serif tracking-widest text-gray-200 mix-blend-difference px-2 transition-all duration-500 z-[100] ${visible ? 'opacity-100 translate-x-0 pointer-events-auto' : 'opacity-0 -translate-x-8 pointer-events-none'}`}>
+          <NavLink onClick={() => setVisible(false)} className='hover:text-[#c8a06e] transition-colors' to='/'>HOME</NavLink>
+          <NavLink onClick={() => setVisible(false)} className='hover:text-[#c8a06e] transition-colors' to='/collection'>COLLECTION</NavLink>
+          <NavLink onClick={() => setVisible(false)} className='hover:text-[#c8a06e] transition-colors' to='/about'>ABOUT</NavLink>
+          <NavLink onClick={() => setVisible(false)} className='hover:text-[#c8a06e] transition-colors' to='/contact'>CONTACT</NavLink>
+        </div>
+      </div>
       <div className='flex items-center gap-6 ml-auto'>
         <img onClick={() => { setShowSearch(true); navigate('/collection') }} src={assets.search_icon} className='w-5 cursor-pointer invert' alt="" />
         <div className='group relative'>
@@ -84,21 +74,8 @@ const Navbar = () => {
           <img src={assets.cart_icon} className='w-5 min-w-5 invert' alt="" />
           <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-white text-black aspect-square rounded-full text-[8px] font-bold'>{getCartCount()}</p>
         </Link>
-        <img onClick={() => setVisible(true)} src={assets.menu_icon} className='w-5 cursor-pointer sm:hidden invert' alt="" />
       </div>
-      {/* Sidebar menu for small screens */}
-      <div className={`fixed top-0 right-0 bottom-0 overflow-hidden bg-white z-50 transition-all ${visible ? 'w-full' : 'w-0'}`}>
-        <div className='flex flex-col text-gray-600 w-full'>
-          <div onClick={() => setVisible(false)} className='flex items-center gap-4 p-3 cursor-pointer'>
-            <img className='h-4 rotate-180' src={assets.dropdown_icon} alt="" />
-            <p>Back</p>
-          </div>
-          <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border' to='/'>HOME</NavLink>
-          <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border' to='/collection'>COLLECTION</NavLink>
-          <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border' to='/about'>ABOUT</NavLink>
-          <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border' to='/contact'>CONTACT</NavLink>
-        </div>
-      </div>
+
     </div>
   );
 };

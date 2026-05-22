@@ -62,6 +62,9 @@ import z122 from './z12.avif'
 import g1 from './555.jpg'
 import g2 from './666.jpg'
 import herovid from './vedio.webm'
+import mens from './mens.jpg'
+import women from './women.jpg'
+import kids from './kids.jpg'
 
 
 
@@ -101,6 +104,9 @@ export const assets = {
     z33,
     z44,
     g1,
+    mens,
+    women,
+    kids,
     g2,
     main,
     zorry,

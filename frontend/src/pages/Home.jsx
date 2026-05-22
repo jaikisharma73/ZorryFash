@@ -3,6 +3,7 @@ import Hero from '../components/Hero'
 import EditorialSection from '../components/EditorialSection'
 import SplitImageSection from '../components/SplitImageSection'
 import SplitImageSection2 from '../components/SplitImageSection2'
+import SummerSection from '../components/SummerSection'
 import LatestTransformations from '../components/LatestTransformations'
 import BestSeller from '../components/BestSeller'
 import OurPolicy from '../components/OurPolicy'
@@ -13,6 +14,7 @@ const Home = () => {
       <Hero />
       <EditorialSection />
       <SplitImageSection2 />
+      <SummerSection />
       <LatestTransformations />
       <BestSeller />
     </div>

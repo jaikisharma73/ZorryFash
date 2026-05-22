@@ -61,7 +61,6 @@ const Edit = ({ token }) => {
     setSizePrices(prev => ({...prev, [size]: price}));
   }
 
-  // Fetch product data
   const fetchProduct = async () => {
     try {
       const response = await axios.post(backendUrl + '/api/product/single', { productId: id })
@@ -74,17 +73,16 @@ const Edit = ({ token }) => {
         setBestseller(product.bestseller)
         setExistingImages(product.image || [])
 
-        // Handle both new format [{size, price}] and old format ["S", "M"]
         if (product.sizes && product.sizes.length > 0) {
           if (typeof product.sizes[0] === 'object' && product.sizes[0].size) {
-            // New format: [{size: "S", price: 500}, ...]
+
             const sizeNames = product.sizes.map(s => s.size);
             const prices = {};
             product.sizes.forEach(s => { prices[s.size] = s.price; });
             setSizes(sizeNames);
             setSizePrices(prices);
           } else {
-            // Old format: ["S", "M", "L"] — use product.price as default for all
+
             setSizes(product.sizes);
             const prices = {};
             product.sizes.forEach(s => { prices[s] = product.price; });
@@ -111,7 +109,6 @@ const Edit = ({ token }) => {
 
     const validSizes = sizes.filter(size => allSizes.includes(size));
 
-    // Validate that all selected sizes have prices
     for (const size of validSizes) {
       if (!sizePrices[size] || sizePrices[size] <= 0) {
         toast.error(`Please enter a price for size ${size}`);
@@ -127,7 +124,6 @@ const Edit = ({ token }) => {
     try {
       const formData = new FormData()
 
-      // Build sizes array with prices
       const sizesWithPrices = validSizes.map(size => ({
         size: size,
         price: Number(sizePrices[size])
@@ -180,7 +176,7 @@ const Edit = ({ token }) => {
       <div>
         <p className='mb-2'>Upload Image <span className='text-sm text-gray-400'>(Upload new images to replace existing ones, or leave empty to keep current images)</span></p>
 
-        {/* Show existing images */}
+        
         {existingImages.length > 0 && (
           <div className='mb-3'>
             <p className='text-sm text-gray-500 mb-1'>Current Images:</p>
@@ -261,7 +257,7 @@ const Edit = ({ token }) => {
           ))}
         </div>
 
-        {/* Price inputs for selected sizes */}
+        
         {sizes.length > 0 && (
           <div className='mt-4 flex flex-col gap-2'>
             <p className='text-sm font-medium text-gray-600'>Set price for each size:</p>

@@ -40,9 +40,7 @@ const Cart = () => {
         {
           cartData.map((item, index) => {
 
-            const productData = products.find((product) => product._id === item._id);
-
-            // Get size-specific price
+            const productData = products.find((product) => product._id === item._id);
             let itemPrice = productData.price;
             if (productData.sizes && productData.sizes.length > 0 && typeof productData.sizes[0] === 'object' && productData.sizes[0].size) {
               const sizeData = productData.sizes.find(s => s.size === item.size);

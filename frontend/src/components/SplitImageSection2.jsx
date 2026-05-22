@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const SplitImageSection2 = () => {
   return (
     <section className="relative w-full md:min-h-[120vh] flex flex-col md:flex-row gap-[3px] md:gap-0">
-      {/* left */}
+      
       <Link to="/product/6a0eebc9596a0ffbb99c486f" onClick={() => window.scrollTo(0, 0)} className="relative block w-full md:w-1/2 h-auto cursor-pointer group">
         <img
           src={assets.g1}
@@ -17,7 +17,7 @@ const SplitImageSection2 = () => {
         </div>
       </Link>
 
-      {/* right */}
+      
       <Link to="/product/6a0eebc9596a0ffbb99c486f" onClick={() => window.scrollTo(0, 0)} className="relative block w-full md:w-1/2 h-auto cursor-pointer group">
         <img
           src={assets.g2}

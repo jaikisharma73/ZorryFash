@@ -75,11 +75,10 @@ const Hero = () => {
 
   return (
     <div className="bg-white relative">
-      {/* Premium Sticky ZORRY Text for Hero */}
       <div className="absolute inset-0 pointer-events-none z-50">
-        <div className="sticky top-[80vh] md:top-[85vh] w-full flex justify-end pr-6 md:pr-12">
-          <div className="text-right mr-4">
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-8xl text-gray-200 mix-blend-difference tracking-[0.2em] drop-shadow-sm transition-transform duration-500 ease-out">
+        <div className="sticky top-[93vh] md:top-[85vh] w-full flex justify-end pr-4">
+          <div className="text-right -mr-4">
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-8xl bg-gradient-to-r from-white/50 via-white/90 to-white/30 bg-clip-text text-transparent tracking-[0.10em] transition-transform duration-500 ease-out drop-shadow-lg">
               ZORRY
             </h1>
           </div>
@@ -135,7 +134,6 @@ const Hero = () => {
       </div>
 
       <section className="relative w-full min-h-screen py-16 sm:py-24 lg:py-28 overflow-hidden flex items-center">
-        {/* Video Background */}
         <video
           autoPlay
           loop
@@ -189,7 +187,7 @@ const Hero = () => {
                 "
                 style={{
                   whiteSpace: "pre-line",
-                  // fontFamily: "Prata, serif",
+
                 }}
               >
                 {slides[currentSlide].title}

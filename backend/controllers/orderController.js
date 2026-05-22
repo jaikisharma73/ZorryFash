@@ -3,21 +3,15 @@ import userModel from "../models/userModel.js";
 import sendEmail from "../utils/email.js";
 import Stripe from 'stripe'
 import razorpay from 'razorpay'
-import crypto from 'crypto'
-
-// global variables
+import crypto from 'crypto'
 const currency = 'inr'
-const deliveryCharge = 10
-
-// gateway initialize
+const deliveryCharge = 10
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 const razorpayInstance = new razorpay({
     key_id : process.env.RAZORPAY_KEY_ID,
     key_secret : process.env.RAZORPAY_KEY_SECRET,
-})
-
-// Placing orders using COD Method
+})
 const placeOrder = async (req,res) => {
     
     try {
@@ -57,9 +51,7 @@ const placeOrder = async (req,res) => {
         res.json({success:false,message:error.message})
     }
 
-}
-
-// Placing orders using Stripe Method
+}
 const placeOrderStripe = async (req,res) => {
     try {
         
@@ -114,9 +106,7 @@ const placeOrderStripe = async (req,res) => {
         console.log(error)
         res.json({success:false,message:error.message})
     }
-}
-
-// Verify Stripe 
+}
 const verifyStripe = async (req,res) => {
 
     const { orderId, success, userId } = req.body
@@ -148,9 +138,7 @@ const verifyStripe = async (req,res) => {
         res.json({success:false,message:error.message})
     }
 
-}
-
-// Placing orders using Razorpay Method
+}
 const placeOrderRazorpay = async (req,res) => {
     try {
         
@@ -233,10 +221,7 @@ const verifyRazorpay = async (req,res) => {
         console.log(error)
         res.json({success:false,message:error.message})
     }
-}
-
-
-// All Orders data for Admin Panel
+}
 const allOrders = async (req,res) => {
 
     try {
@@ -249,9 +234,7 @@ const allOrders = async (req,res) => {
         res.json({success:false,message:error.message})
     }
 
-}
-
-// User Order Data For Forntend
+}
 const userOrders = async (req,res) => {
     try {
         
@@ -264,9 +247,7 @@ const userOrders = async (req,res) => {
         console.log(error)
         res.json({success:false,message:error.message})
     }
-}
-
-// update order status from Admin Panel
+}
 const updateStatus = async (req,res) => {
     try {
         
@@ -279,9 +260,7 @@ const updateStatus = async (req,res) => {
         console.log(error)
         res.json({success:false,message:error.message})
     }
-}
-
-// update order payment status from Admin Panel
+}
 const updatePaymentStatus = async (req,res) => {
     try {
         

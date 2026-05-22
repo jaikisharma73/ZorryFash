@@ -1,13 +1,11 @@
 import userModel from '../models/userModel.js';
 import sendEmail from '../utils/email.js';
 
-// Controller to run abandoned cart check
 export const checkAbandonedCarts = async (req, res) => {
     try {
         console.log('API Hit: Running abandoned cart check...');
-        
-        // Calculate the threshold time
-        // Set to 24 HOURS
+
+
         const thresholdDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
         const usersToRemind = await userModel.find({
@@ -18,7 +16,7 @@ export const checkAbandonedCarts = async (req, res) => {
         let sentCount = 0;
 
         for (const user of usersToRemind) {
-            // Ensure cart is actually not empty
+
             if (user.cartData && Object.keys(user.cartData).length > 0) {
                 
                 const frontendUrl = process.env.FRONTEND_URL || 'https://zorry-fash-frontend.vercel.app';
@@ -38,8 +36,7 @@ export const checkAbandonedCarts = async (req, res) => {
                 };
 
                 await sendEmail(emailOptions);
-                
-                // Mark reminder as sent
+
                 user.abandonedReminderSent = true;
                 await user.save();
                 

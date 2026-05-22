@@ -66,8 +66,7 @@ const PlaceOrder = () => {
                 for (const item in cartItems[items]) {
                     if (cartItems[items][item] > 0) {
                         const itemInfo = structuredClone(products.find(product => product._id === items))
-                        if (itemInfo) {
-                            // Check if product has size-wise pricing
+                        if (itemInfo) {
                             if (itemInfo.sizes && itemInfo.sizes.length > 0 && typeof itemInfo.sizes[0] === 'object' && itemInfo.sizes[0].size) {
                                 const sizeData = itemInfo.sizes.find(s => s.size === item);
                                 if (sizeData) {
@@ -90,9 +89,7 @@ const PlaceOrder = () => {
             }
             
 
-            switch (method) {
-
-                // API Calls for COD
+            switch (method) {
                 case 'cod':
                     const response = await axios.post(backendUrl + '/api/order/place',orderData,{headers:{token}})
                     if (response.data.success) {
@@ -136,7 +133,7 @@ const PlaceOrder = () => {
 
     return (
         <form onSubmit={onSubmitHandler} className='flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t'>
-            {/* ------------- Left Side ---------------- */}
+            
             <div className='flex flex-col gap-4 w-full sm:max-w-[480px]'>
 
                 <div className='text-xl sm:text-2xl my-3'>
@@ -159,7 +156,7 @@ const PlaceOrder = () => {
                 <input required onChange={onChangeHandler} name='phone' value={formData.phone} className='border border-gray-300 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Phone' />
             </div>
 
-            {/* ------------- Right Side ------------------ */}
+            
             <div className='mt-8'>
 
                 <div className='mt-8 min-w-80'>
@@ -168,7 +165,7 @@ const PlaceOrder = () => {
 
                 <div className='mt-12'>
                     <Title text1={'PAYMENT'} text2={'METHOD'} />
-                    {/* --------------- Payment Method Selection ------------- */}
+                    
                     <div className='flex gap-3 flex-col lg:flex-row'>
                         <div onClick={() => setMethod('stripe')} className='flex items-center gap-3 border p-2 px-3 cursor-pointer'>
                             <p className={`min-w-3.5 h-3.5 border rounded-full ${method === 'stripe' ? 'bg-green-400' : ''}`}></p>

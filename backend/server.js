@@ -8,23 +8,15 @@ import productRouter from './routes/productRoute.js'
 import cartRouter from './routes/cartRoute.js'
 import orderRouter from './routes/orderRoute.js'
 import cronRouter from './routes/cronRoute.js'
-import chatRouter from './routes/chatRoute.js'
-
-// App Config
+import chatRouter from './routes/chatRoute.js'
 const app = express()
-const port = process.env.PORT || 4000
-
-// middlewares
+const port = process.env.PORT || 4000
 app.use(express.json())
-app.use(cors())
-
-// Ensure DB is connected before handling any requests (Serverless friendly)
+app.use(cors())
 app.use(async (req, res, next) => {
     await connectDB()
     next()
-})
-
-// api endpoints
+})
 app.use('/api/user',userRouter)
 app.use('/api/product',productRouter)
 app.use('/api/cart',cartRouter)
@@ -34,9 +26,7 @@ app.use('/api/chat',chatRouter)
 
 app.get('/',(req,res)=>{
     res.send("API Working")
-})
-
-// ✅ START SERVER ONLY AFTER DB CONNECTS
+})
 const startServer = async () => {
     try {
         await connectDB()          // 🔥 WAIT here

@@ -19,18 +19,16 @@ const Product = () => {
   const [comment, setComment] = useState('');
   const [activeTab, setActiveTab] = useState('description');
 
-  // Helper: get price for a specific size from the product's sizes array
   const getSizePrice = (product, selectedSize) => {
     if (product.sizes && product.sizes.length > 0 && typeof product.sizes[0] === 'object' && product.sizes[0].size) {
-      // New format: [{size: "S", price: 500}, ...]
+
       const found = product.sizes.find(s => s.size === selectedSize);
       return found ? found.price : product.price;
     }
-    // Old format: ["S", "M", "L"] — use product.price
+
     return product.price;
   }
 
-  // Helper: get the list of size names from the product
   const getSizeNames = (product) => {
     if (product.sizes && product.sizes.length > 0 && typeof product.sizes[0] === 'object' && product.sizes[0].size) {
       return product.sizes.map(s => s.size);
@@ -38,7 +36,6 @@ const Product = () => {
     return product.sizes || [];
   }
 
-  // Helper: get default/minimum price to display before size selection
   const getDefaultPrice = (product) => {
     if (product.sizes && product.sizes.length > 0 && typeof product.sizes[0] === 'object' && product.sizes[0].size) {
       const prices = product.sizes.map(s => s.price);
@@ -76,7 +73,6 @@ const Product = () => {
     }
   }, [productData]);
 
-  // Update price when size is selected
   const handleSizeSelect = (selectedSize) => {
     setSize(selectedSize);
     if (productData) {
@@ -100,7 +96,7 @@ const Product = () => {
         toast.success('Review added successfully');
         setComment('');
         setRating(5);
-        // Refresh product data locally or fetch again. Let's just reload the page for simplicity.
+
         window.location.reload();
       } else {
         toast.error(response.data.message);
@@ -112,10 +108,10 @@ const Product = () => {
 
   return productData ? (
     <div className='border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100'>
-      {/*----------- Product Data-------------- */}
+      
       <div className='flex gap-12 sm:gap-12 flex-col sm:flex-row'>
 
-        {/*---------- Product Images------------- */}
+        
         <div className='flex-1 flex flex-col-reverse gap-3 sm:flex-row'>
           <div className='flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full'>
             {
@@ -129,7 +125,7 @@ const Product = () => {
           </div>
         </div>
 
-        {/* -------- Product Info ---------- */}
+        
         <div className='flex-1'>
           <h1 className='font-medium text-2xl mt-2'>{productData.name}</h1>
           <div className=' flex items-center gap-1 mt-2'>
@@ -163,7 +159,7 @@ const Product = () => {
         </div>
       </div>
 
-      {/* ---------- Description & Review Section ------------- */}
+      
       <div className='mt-20'>
         <div className='flex'>
           <b onClick={() => setActiveTab('description')} className={`border px-5 py-3 text-sm cursor-pointer ${activeTab === 'description' ? 'font-bold bg-gray-50' : 'font-normal'}`}>Description</b>
@@ -227,7 +223,7 @@ const Product = () => {
         </div>
       </div>
 
-      {/* --------- display related products ---------- */}
+      
 
       <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
 

@@ -10,11 +10,9 @@ const ScrollToTop = () => {
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0;
     };
-    
-    // Basic synchronous scroll
+
     scrollToTop();
-    
-    // Fallback async scroll in case page height changes after render
+
     setTimeout(scrollToTop, 50);
   }, [pathname]);
 

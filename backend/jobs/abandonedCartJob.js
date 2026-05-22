@@ -2,14 +2,12 @@ import cron from 'node-cron';
 import userModel from '../models/userModel.js';
 import sendEmail from '../utils/email.js';
 
-// Default: Run every day at midnight ('0 0 * * *')
 const startAbandonedCartJob = () => {
     cron.schedule('0 0 * * *', async () => {
         try {
             console.log('Running abandoned cart check...');
 
-            // Calculate the threshold time
-            // Set to 24 HOURS
+
             const thresholdDate = new Date(Date.now() - 24 * 60 * 60 * 1000);
 
             const usersToRemind = await userModel.find({
@@ -18,7 +16,7 @@ const startAbandonedCartJob = () => {
             });
 
             for (const user of usersToRemind) {
-                // Ensure cart is actually not empty
+
                 if (user.cartData && Object.keys(user.cartData).length > 0) {
 
                     const frontendUrl = process.env.FRONTEND_URL || 'https://shop-frontend-sandy.vercel.app';
@@ -39,7 +37,6 @@ const startAbandonedCartJob = () => {
 
                     await sendEmail(emailOptions);
 
-                    // Mark reminder as sent
                     user.abandonedReminderSent = true;
                     await user.save();
 

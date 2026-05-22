@@ -6,7 +6,6 @@ const ProductItem = ({id,image,name,price,sizes}) => {
     
     const {currency} = useContext(ShopContext);
 
-    // Get the minimum price from size-wise pricing if available
     let displayPrice = price;
     let hasSizePricing = false;
     if (sizes && sizes.length > 0 && typeof sizes[0] === 'object' && sizes[0].size) {
