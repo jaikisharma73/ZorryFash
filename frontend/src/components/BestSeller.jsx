@@ -35,7 +35,7 @@ const BestSeller = () => {
     return (
         <section
             ref={sectionRef}
-            className="w-full bg-white py-20 sm:py-28 px-4 sm:px-8 lg:px-14 overflow-hidden"
+            className="relative w-full bg-white py-20 sm:py-28 px-4 sm:px-8 lg:px-14 overflow-hidden z-20"
         >
 
             <div
@@ -93,7 +93,7 @@ const BestSeller = () => {
                             }}
                         >
 
-                            <div className="relative overflow-hidden bg-[#f7f7f7]">
+                            <div className="relative overflow-hidden bg-white">
 
                                 <div className="overflow-hidden">
 
