@@ -45,20 +45,20 @@ const Edit = ({ token }) => {
     if (sizes.includes(size)) {
       setSizes(prev => prev.filter(item => item !== size));
       setSizePrices(prev => {
-        const updated = {...prev};
+        const updated = { ...prev };
         delete updated[size];
         return updated;
       });
     } else {
       setSizes(prev => [...prev, size]);
       if (defaultPrices[size]) {
-        setSizePrices(prev => ({...prev, [size]: defaultPrices[size]}));
+        setSizePrices(prev => ({ ...prev, [size]: defaultPrices[size] }));
       }
     }
   }
 
   const updateSizePrice = (size, price) => {
-    setSizePrices(prev => ({...prev, [size]: price}));
+    setSizePrices(prev => ({ ...prev, [size]: price }));
   }
 
   const fetchProduct = async () => {
@@ -176,7 +176,7 @@ const Edit = ({ token }) => {
       <div>
         <p className='mb-2'>Upload Image <span className='text-sm text-gray-400'>(Upload new images to replace existing ones, or leave empty to keep current images)</span></p>
 
-        
+
         {existingImages.length > 0 && (
           <div className='mb-3'>
             <p className='text-sm text-gray-500 mb-1'>Current Images:</p>
@@ -222,7 +222,7 @@ const Edit = ({ token }) => {
       <div className='flex flex-col sm:flex-row gap-2 w-full sm:gap-8'>
 
         <div>
-          <p className='mb-2'>Product category</p>
+          <p className='mb-2'>Product category  ....vdv</p>
           <select onChange={(e) => setCategory(e.target.value)} value={category} className='w-full px-3 py-2'>
             <option value="Men">Men</option>
             <option value="Women">Women</option>
@@ -257,7 +257,7 @@ const Edit = ({ token }) => {
           ))}
         </div>
 
-        
+
         {sizes.length > 0 && (
           <div className='mt-4 flex flex-col gap-2'>
             <p className='text-sm font-medium text-gray-600'>Set price for each size:</p>
